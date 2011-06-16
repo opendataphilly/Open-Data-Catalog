@@ -12,7 +12,7 @@ Dependancies from aptitide:
 Dependancies from web:
 	wget http://www.djangoproject.com/download/1.3/tarball/
 	wget http://sourceforge.net/projects/dbfpy/files/dbfpy/2.2.5/dbfpy-2.2.5.tar.gz/download
-    get http://thumbnail.sorl.net/sorl-thumbnail-3.2.5.tar.gz
+    wget http://thumbnail.sorl.net/sorl-thumbnail-3.2.5.tar.gz
 	wget https://bitbucket.org/ubernostrum/django-registration/downloads/django-registration-0.8-alpha-1.tar.gz
 	wget http://django-pagination.googlecode.com/files/django-pagination-1.0.5.tar.gz
 	wget https://github.com/dcramer/django-ratings/tarball/d0ae149d112c7e5f9f40bb04028ceac4bf4b0e0d
