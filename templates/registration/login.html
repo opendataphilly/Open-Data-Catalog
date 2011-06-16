@@ -1,0 +1,44 @@
+{% extends "template1.html" %}
+{% load url from future %}
+
+{% block title %} - Login{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+    $('table').append($('<tr>',{html:'<td></td><td><input type="submit" value="Login" class="button" /></td>'}))
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+
+
+<h1 id="title">Login</h1>
+<h2 id="description">Login with your free account to add ratings and comments, suggest ideas, and submit data sets.</h2>
+
+
+<div class="resource login-reg" id="form_container">
+{% if form.errors %}
+<div class="resource error_message">Your username and password didn't match. </br>Please try again.</div>
+{% endif %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+{% csrf_token %}
+<table>
+{{form}}
+
+</table>
+
+<div class="register_or_reset">
+	<a href="{{SITE_ROOT}}/accounts/register/">Register</a> or <a href="{{SITE_ROOT}}/accounts/password/reset/">Reset Password</a>
+</div>
+
+
+<input type="hidden" name="next" value="{{ next|default:'/' }}" />
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "template1.html" %}
+{% load url from future %}
+
+{% block title %} - RSS Feeds{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+<h1 id="title">RSS Feeds</h1>
+<h2 id="description">Subscribe to our RSS feeds to learn when new content is added to OpenDataPhilly.org.</h2>
+<div class="resource " style="line-height:25px;">
+    <div><a href="{{SITE_ROOT}}/feeds/resources"><img src="/static/images/icon_rss.png" alt="RSS" /></a> <a href="{{SITE_ROOT}}/feeds/resources">All Resources</a></div>
+    <div><a href="{{SITE_ROOT}}/feeds/ideas"><img src="/static/images/icon_rss.png" alt="RSS" /></a> <a href="{{SITE_ROOT}}/feeds/ideas">All Ideas</a> </div>
+    <div><a href="{{SITE_ROOT}}/feeds/updates"><img src="/static/images/icon_rss.png" alt="RSS" /></a> <a href="{{SITE_ROOT}}/feeds/updates">Recently Updated Resources</a> </div>
+    <div>&nbsp;</div>
+    <div>Tagged Resources: </div>
+    {% for tag in tags %}
+        <div style="padding-left:10px;"><a href="{{SITE_ROOT}}/feeds/tag/{{tag.id}}"><img src="/static/images/icon_rss.png" alt="RSS" /></a> <a href="{{SITE_ROOT}}/feeds/tag/{{tag.id}}">{{tag.tag_name}}</a></div>
+    {% endfor %}
+</div>
+
+{% endblock %}

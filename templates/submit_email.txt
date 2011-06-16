@@ -1,0 +1,22 @@
+Submitter: {{submitter}}
+Date: {{submit_date}}
+
+Dataset Name: {{dataset_name}}
+Copyright Holder:  {{copyright_holder}}
+Organization:  {{organization}}
+Contact Email:  {{contact_email}}
+Contact Phone: {{contact_phone}}
+Url:  {{url}}
+Time Period: {{time_period}}
+Release Date: {{release_date}} 
+Area of Interest: {{area_of_interest}}
+Update Frequency: {{update_frequency}} 
+Coordinate Systems: {{coord_system}}
+Types: {{types}}
+Formats: {{formats}}
+Description: {{description}}
+Usage Limitations:  {{usage_limitations}}
+Collection Process: {{collection_process}}
+Data Purpose:  {{data_purpose}}
+Intended Audience:  {{intended_audience}}
+Why Collected:  {{why}}

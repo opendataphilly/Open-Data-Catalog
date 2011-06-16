@@ -1,0 +1,34 @@
+<div id="left_container">
+
+<a href="{{SITE_ROOT}}/" id="logo">Site Logo</a>
+
+<div id="tags">
+	<h2 class="grid">Data</h2>
+		<ul>
+            <li><a href="{{SITE_ROOT}}/opendata/?sort=name&dir=asc">All Data</a></li>
+			<li id="tag_list"></li>
+			<li class="separator"></li>
+			<li class="icon-xsm" id="ideas"><a href="{{SITE_ROOT}}/ideas">Idea Gallery</a></li>
+      <li class="icon-xsm" id="add"><a href="{{SITE_ROOT}}/opendata/submit/">Submit Data</a></li>
+      <li class="icon-xsm" id="nominate"><a href="{{SITE_ROOT}}/opendata/nominate/?sort=rating_score&dir=desc">Nominate Data</a></li>
+
+		</ul>
+	</div>
+
+	<div id="abouts">
+	  <h2 class="grid">About</h2>
+		<ul>
+			<li id="about"><a href="{{SITE_ROOT}}/about/">About</a></li>
+			<li id="faq"><a href="{{SITE_ROOT}}/faq/">FAQ</a></li>
+            <li id="usefullinks"><a href="{{SITE_ROOT}}/usefullinks/">Useful Links</a></li>
+			<li id="contact"><a href="{{SITE_ROOT}}/contact/">Contact</a></li>
+			<li id="terms"><a href="{{SITE_ROOT}}/terms/">Terms</a></li>
+            <li id="feeds"><a href="{{SITE_ROOT}}/feeds/">RSS Feeds</a></li>
+            {% if perms.opendata.change_resource %}
+			<li class="separator"></li>
+            <li id="admin"><a href="{{SITE_ROOT}}/_admin_">Administration</a></li>
+            {% endif %}
+		</ul>
+	</div>
+
+</div>

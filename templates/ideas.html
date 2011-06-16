@@ -1,0 +1,91 @@
+{% extends "template1.html" %}
+
+{% load thumbnail %}
+{% load pagination_tags %}
+
+{% block title %} - Idea Gallery{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+
+			odp.makeDialog('.tab_image');
+			odp.makeTabs('.tab_container');
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+	<div id="idea_header">
+		<h1 id="header_title">Idea Gallery</h1>
+		<h2 id="header_description">
+			Data on its own is not as helpful as it could be. To be truly useful, data needs to be sorted, analyzed, and
+				transformed in new applications, visualizations, and stories. The Idea Gallery on OpenDataPhilly features
+				some of the most engaging and interesting uses of open data. If you have created a beautiful visualization or 
+                have used Philadelphia data in other inspiring ways and you think it's worth sharing with others in the 
+                Idea Gallery, let us know at <a target="_blank" href="mailto:info@opendataphilly.org">info@opendataphilly.org</a>.
+
+		</h2>
+	</div>
+{% autopaginate ideas 3 %}
+	<div id="idea_list">
+		<ul>
+		{% for idea in ideas %}
+			<li class="idea_item">
+				<h3 class="idea_title"><a href="{{SITE_ROOT}}{{idea.get_absolute_url}}">{{idea}}</a></h3>
+        <div class="byline">By <strong>{{idea.author}}</strong></div>
+
+				<div class="tab_container" id="tab_image_container">
+					{% if idea.ideaimage_set.count > 0 %}
+					{% for i in idea.ideaimage_set.all %}
+					<div class="tab_image" id="tab_image_{{i.id}}">
+					  <img src="{% thumbnail i 300x300 autocrop %}" alt="{{i.title}}">
+					  <div class="tab_image_detail">{{i.title}}</div>
+					  <div title="{{i.title}}" class="dialog" id="dialog_{{i.id}}">
+						<img src="{% thumbnail i 626x520 %}">
+					  </div>
+					</div>
+					{% endfor %}
+					<ul class="tab_image_pager">
+          {% if idea.ideaimage_set.count > 1 %}
+					  {% for i in idea.ideaimage_set.all %}
+					  <li><a href="#tab_image_{{i.id}}" onclick="odp.trackEvent('View Small Image', 'Idea Image', 'Image', {{i.id}})"></a></li>
+					  {% endfor %}
+          {% endif %}
+					</ul>
+					{% else %}
+					<div class="tab_image" id="tab_image_{{i.id}}">
+					  <img src="/static/images/detail_no_image.gif" alt="No Idea Images">
+					  <div class="tab_image_detail">No Images</div>
+					</div>
+					{% endif %}
+      			</div>
+
+				<div class="idea_description">{{idea.description|safe|truncatewords:100}}</div>
+
+
+         <h4 class="idea_resources_title">Data used:</h4>
+          <ul id="idea_resources">
+            {% for resource in idea.resources.all %}
+              <li class="resource_item"><a href="{{SITE_ROOT}}{{resource.get_absolute_url}}" onclick="odp.trackEvent('Resource Link', 'Idea List', 'Idea', {{idea.id}})">{{resource}}</a></li>
+            {% endfor %}
+          </ul>
+
+				<div id="idea_footer">
+					<div class="idea_button"><a href="{{SITE_ROOT}}/{{idea.get_absolute_url}}" class="button">Link to this idea</a></div>
+					<div class="idea_date">Posted: <strong>{{idea.created_by_date|date:"M d, Y"}}</strong></div>
+          <div class="clear"></div>
+				</div>
+
+
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
+
+	<div id="pager">{% paginate %}</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "template_home.html" %}
+
+{% block title %} - Connecting People With Data{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<a class="resource" id="home_idea" href="{{SITE_ROOT}}{{idea.get_absolute_url}}" style="background: #ffffff url(/media/{{idea.get_home_page_image.image|default:'/static/images/detail_no_image.gif'}}) center no-repeat;"></a>
+<div id="home_idea_label">
+  <a href="{{SITE_ROOT}}{{idea.get_absolute_url}}">{{idea.title}}</a> by {{idea.author}}
+</div>
+<div id="home_twitter">
+<h2 class="grid"><a href="http://twitter.com/opendataphilly" target="_blank"><span class="icon_twitter"></span>@OpenDataPhilly</a></h2>
+
+<ul id="home_twitter_feed">
+  {% for tweet in tweets %}
+  <li class="twitter_item">
+    <p><a href="http://www.twitter.com/opendataphilly/statuses/{{tweet.id}}" target="_blank" class="date">{{tweet.date|date:"l, F d, Y"}}</a>, <span class="time">{{tweet.date|date:"g:ia"}}</span></p>
+    <p class="post">
+      {{tweet.text|urlize}}
+    </p>
+  </li>
+  {% endfor %}
+</ul>
+
+</div>
+
+
+<div id="home_additions">
+<a href="{{SITE_ROOT}}/opendata/submit/" id="button_submission">Got data? Make a submission</a>
+
+  <h2 class="grid">Recent Additions</h2>
+  <ul id="home_additions_list">
+    {% for resource in recent %}
+		<li>
+		  <p class="date">{{resource.created|date:"l, F d, Y"}}</p>
+		  <a href="{{SITE_ROOT}}{{resource.get_absolute_url}}" class="data">{{resource}}</a>
+		  <div class="home_rating">
+		  	  <input name="star_r_{{resource.id}}" type="radio" class="star star_r_{{resource.id}}" disabled="disabled"/>
+			  <input name="star_r_{{resource.id}}" type="radio" class="star star_r_{{resource.id}}" disabled="disabled"/>
+			  <input name="star_r_{{resource.id}}" type="radio" class="star star_r_{{resource.id}}" disabled="disabled"/>
+			  <input name="star_r_{{resource.id}}" type="radio" class="star star_r_{{resource.id}}" disabled="disabled"/>
+			  <input name="star_r_{{resource.id}}" type="radio" class="star star_r_{{resource.id}}" disabled="disabled"/>
+			  <script type="text/javascript">
+				var rating = {{resource.rating.score}};
+				if (rating != 0) {
+					$("input:radio.star_r_{{resource.id}}")[{{resource.rating.score}}-1].checked = 'checked';
+				}
+			  </script>
+		  </div>
+		</li>
+	{% endfor %}
+
+  </ul>
+
+
+</div>
+
+
+
+{% endblock %}

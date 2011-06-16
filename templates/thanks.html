@@ -1,0 +1,26 @@
+{% extends "template1.html" %}
+
+{% block title %} - Thanks{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<h1 id="title">Thanks for your submitting data!</h1>
+<h2 id="description"></h2>
+
+<div class="resource">
+  <h2>We will review the data you submitted and contact you if we need further information. </h2>
+  <p>This process may take a week or two depending on the number of submissions requiring review. 
+  Should you have any questions, you can contact us at info@opendataphilly.org. Thank you for 
+  contributing to OpenDataPhilly!</p> 
+</div>
+
+{% endblock %}

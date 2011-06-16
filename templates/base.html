@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        {% block meta %}
+        {% endblock %}
+		<title>OpenDataPhilly{% block title %}{% endblock %}</title>
+
+			{% block tophead %}
+			{% endblock %}
+
+			<script type="text/javascript" src="/static/jquery-1.5.2.js"></script>
+			<script type="text/javascript" src="/static/jQueryUI/js/jquery-ui-1.8.11.min.js"></script>
+			<script type="text/javascript" src="/static/StarRating/jquery.rating.js"></script>
+			<script type="text/javascript" src="/static/jquery.query-2.1.7.js"></script>
+			<script type="text/javascript" src="/static/odp.js"></script>
+      <!-- TYPEKIT -->
+      <script type="text/javascript" src="http://use.typekit.com/nni2gly.js"></script>
+      <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+			<link rel="stylesheet" href="/static/reset.css" type="text/css"/>
+			<link rel="stylesheet" href="/static/StarRating/jquery.rating.css" type="text/css"/>
+      <link rel="stylesheet" href="/static/jQueryUI/css/jquery.ui.base.css" type="text/css"/>
+      <link rel="stylesheet" href="/static/odp.css" type="text/css"/>
+
+            <script type="text/javascript">
+                odp.site_root = "{{SITE_ROOT}}";    
+            </script>
+
+			{% block js_ready %}
+			{% endblock %}
+
+			{% block bottomhead %}
+			{% endblock %}
+			
+            <script type="text/javascript">
+
+              //var _gaq = _gaq || [];
+              //_gaq.push(['_setAccount', 'UA-XXXXXXXXX']);
+              //_gaq.push(['_trackPageview']);
+
+              //(function() {
+              //  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              //  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              //  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+              //})();
+
+            </script>
+
+	</head>
+
+	<body {% block body_load %}{% endblock %} {% block body_id %}{% endblock %} class="{% block body_class %}base_body{% endblock %}">
+    	<div id="wrapper">
+
+    		{% block content %}
+		    	main content goes here
+            {% endblock %}
+
+    	</div>
+
+
+
+	{% block endpage %}
+	{% endblock %}
+
+	</body>
+</html>

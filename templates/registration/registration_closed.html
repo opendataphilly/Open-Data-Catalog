@@ -1,0 +1,22 @@
+{% extends "template1.html" %}
+{% load url from future %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<h1 id="title">Registration Error!</h1>
+<h2 id="description"></h2>
+
+      <div class="resource">
+        <div class="resource error_message">Your activation link has expired. Please contact info@opendataphilly.org if you would still like this account.</div>
+      </div>
+
+{% endblock %}

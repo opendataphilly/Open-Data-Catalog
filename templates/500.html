@@ -1,0 +1,18 @@
+{% extends "template1.html" %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<h1 id="title">500 - Server Error</h1>
+<h2 id="description"></h2>
+
+{% endblock %}

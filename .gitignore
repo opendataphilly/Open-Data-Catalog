@@ -1,0 +1,6 @@
+*.pyc
+*.db
+*.csv
+media/*
+static/*
+static/*

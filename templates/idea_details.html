@@ -1,0 +1,87 @@
+{% extends "template1.html" %}
+
+{% load thumbnail %}
+{% load comments %}
+
+{% block meta %}
+    <meta name="Description" content="{{idea.description|striptags|truncatewords:25}}" />
+    <link rel="canonical" href="http://www.opendataphilly.org{{SITE_ROOT}}{{idea.get_absolute_url}}" />
+    {% if idea.ideaimage_set.count > 0 %}
+    <link rel="image_src" href="http://www.opendataphilly.org{{SITE_ROOT}}{% thumbnail idea.ideaimage_set.all.0 300x300 autocrop %}"/>
+    {% else %}
+    <link rel="image_src" href="http://www.opendataphilly.org{{SITE_ROOT}}/static/images/logo.png"/>
+    {% endif %}
+
+{% endblock %}
+
+{% block title %} - {{idea}}{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+
+			odp.makeDialog('.tab_image');
+			odp.makeTabs('.tab_container');
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<div id="idea_header">
+  <h1 id="header_title">Idea Gallery</h1>
+  <h2 id="header_description">
+      <a href="{{SITE_ROOT}}/ideas">&laquo; Return to list</a>
+  </h2>
+</div>
+  
+<div class="idea_item">
+	<h3 class="idea_title"><a href="{{SITE_ROOT}}/idea/{{idea.id}}/">{{idea}}</a></h3>
+  <div class="byline">By <strong>{{idea.author}}</strong></div>
+	<div class="tab_container" id="tab_image_container">
+		{% if idea.ideaimage_set.count > 0 %}
+			{% for i in idea.ideaimage_set.all %}
+			<div class="tab_image" id="tab_image_{{i.id}}">
+			  <img src="{% thumbnail i 300x300 autocrop %}" alt="{{i.title}}">
+			  <div class="tab_image_detail">{{i.title}} </div>
+			  <div title="{{i.title}}" class="dialog" id="dialog_{{i.id}}">
+						  <img src="{% thumbnail i 626x520 %}" alt="{{i.title}}">
+			  </div>
+			</div>
+			{% endfor %}
+      {% if idea.ideaimage_set.count > 1 %}
+        <ul class="tab_image_pager">
+          {% for i in idea.ideaimage_set.all %}
+          <li><a href="#tab_image_{{i.id}}" onclick="odp.trackEvent('View Small Image', 'Idea Image', 'Image', {{i.id}});return false;"></a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+		{% else %}
+			<div class="tab_image" id="tab_image_1">
+			  <img src="/static/images/detail_no_image.gif" alt="No Idea Images">
+			  <div class="tab_image_detail">No Images</div>
+			</div>
+		{% endif %}
+	</div>
+
+	<div class="idea_description">
+		{{idea.description|safe}}
+	</div>
+  <h4 class="idea_resources_title">Data used:</h4>
+  	<ul id="idea_resources">
+		{% for resource in idea.resources.all %}
+			<li class="resource_item"><a href="{{SITE_ROOT}}{{resource.get_absolute_url}}"  onclick="odp.trackEvent('Resource Link', 'Idea Detail', 'Idea', {{idea.id}})">{{resource}}</a></li>
+		{% endfor %}
+	</ul>
+  
+  <div id="idea_footer">
+      
+   <div class="idea_date">Posted: <strong>{{idea.created_by_date|date:"M d, Y"}}</strong></div>
+		
+
+  </div>
+<div class="clear"></div>
+</div>
+{% endblock %}

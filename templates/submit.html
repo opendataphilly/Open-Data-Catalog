@@ -1,0 +1,47 @@
+{% extends "template1.html" %}
+
+{% block title %} - Submit Data{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+
+			$("#id_release_date").datepicker();
+            $('input:checkbox').next('br').remove() 
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+<h1 id="title">Submit Your Data</h1>
+<h2 id="description">We realize that we haven't listed every Philadelphia-based open data set in the OpenDataPhilly catalog.
+	If have a specific data set that you think should be included, let us know by completing and
+	submitting the form below. We'll review the information and determine whether the data set should
+	be included in OpenDataPhilly. The data must be specific to Philadelphia, available online, and contain
+	structured data. A full list of review criteria is available on the <a href="{{SITE_ROOT}}/faq/">FAQ</a> page.
+	<br><br>
+	This form is for recommending specific data sets, applications, or APIs. If you'd like to nominate a
+	general area where you think data should be more easily available, visit the <a href="{{SITE_ROOT}}/opendata/nominate/?sort=rating_score&dir=desc">Nominate Data</a> page.
+</h2>
+<div id="form_container" class="resource">
+	<form action="{{SITE_ROOT}}/opendata/submit/" method="post">
+		{% csrf_token %}
+		{% if form.errors %}
+		<div class="error_message resource">The form has errors. Please try again.</div>
+		{% endif %}
+
+		<table>
+			{{form.as_table}}
+			<tr>
+				<td>&nbsp;</td>
+				<td>
+					<input class="button" type="submit" value="submit"/>
+					<input class="button" type="reset" value="reset" onclick="window.location='{{current_path}}'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+{% endblock %}

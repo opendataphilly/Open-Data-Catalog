@@ -1,0 +1,350 @@
+{% extends "template1.html" %}
+
+{% load thumbnail %}
+{% load comments %}
+
+{% block meta %}
+    <meta name="Keywords" content="{{resource.tags.all|join:', '}}" />
+    <meta name="Description" content="{{resource.short_description}}" />
+    <link rel="canonical" href="http://www.opendataphilly.org{{SITE_ROOT}}{{resource.get_absolute_url}}" />
+    {% if resource.get_images %}
+    <link rel="image_src" href="http://www.opendataphilly.org{{SITE_ROOT}}{% thumbnail resource.get_images.0 218x273 %}"/>
+    {% else %}
+    <link rel="image_src" href="http://www.opendataphilly.org{{SITE_ROOT}}/static/images/logo.png"/>
+    {% endif %}
+
+{% endblock %}
+
+{% block title %} - {{resource}}{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+      		odp.getTags();
+			odp.setupSearchInput();
+
+			odp.setupCommentForm();
+			odp.makeTabs('#content_resource, #content_data, #content_ratings');
+			odp.makeDialog('.tab_image');
+			odp.makeTabs('.tab_container');
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+	<h1 id="title">{{resource}}</h1>
+	<h2 id="description">{{resource.short_description|safe}}</h2>
+
+  <div class="tab_container" id="content_resource">
+    {% if perms.opendata.change_resource %}
+        <div id="admin_link"><a href="{{SITE_ROOT}}/_admin_/opendata/resource/{{resource.id}}" target="_blank">Edit</a></div>
+    {% endif %}
+    <ul class="tab_header">
+      <li class="tab_button"><a href="#tab_basic_info" onclick="odp.trackEvent('Resource Data', 'View Basic Info', 'Resource', {{resource.id}});return false;">BASIC INFO</a></li>
+      <li class="tab_button"><a href="#tab_extra_info" onclick="odp.trackEvent('Resource Data', 'View All Info', 'Resource', {{resource.id}});return false;">ALL INFO</a></li>
+    </ul>
+    <div class="tab_body" id="tab_basic_info">
+      <div id="tab_data">
+        {% if resource.organization %}
+        <div class="info_label">Organization</div><div class="info_data"><a href="{{SITE_ROOT}}/opendata/search/?qs={{resource.organization}}" onclick="odp.trackEvent('Search Link', 'Resource Organization', 'Resource', {{resource.id}})">{{resource.organization}}</a></div>
+        {% endif %}
+        {% if resource.division %}
+        <div class="info_label">Division</div><div class="info_data"><a href="{{SITE_ROOT}}/opendata/search/?qs={{resource.division}}" onclick="odp.trackEvent('Search Link', 'Resource Organization', 'Resource', {{resource.id}})">{{resource.division}}</a></div>
+        {% endif %}
+        {% if resource.release_date %}
+        <div class="info_label">Release Date</div><div class="info_data">{{resource.release_date}}</a></div>
+        {% endif %}
+        {% if resource.time_period %}
+        <div class="info_label">Valid Time Period</div><div class="info_data">{{resource.time_period}}</div>
+        {% endif %}
+        {% if resource.data_types.all.count > 0 %}
+        <div class="info_label">Data Types</div>
+        <div class="info_data">
+        	{% for dt in resource.data_types.all %}
+		    	{{dt}}{% if not forloop.last %}, {% endif %}
+          	{% endfor %}
+        </div>
+        {% endif %}
+        <div class="info_label">Categories</div>
+        <div class="info_data">
+          {% for tag in resource.tags.all %}
+            <a href="{{SITE_ROOT}}/opendata/tag/{{tag.id}}/?sort=name&dir=asc" onclick="odp.trackEvent('Search Link', 'Resource Tag', 'Tag', '{{tag}}')">{{tag}}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </div>
+        <div class="info_label">Description</div><div class="info_data">{{resource.description|safe}}</div>
+      </div>
+      <div class="tab_container" id="tab_image_container">
+        {% if resource.get_images %}
+			{% for i in resource.get_images %}
+			<div class="tab_image" id="tab_image_{{i.id}}">
+			  <img src="{% thumbnail i 218x273 %}" alt="{{i.title}}">
+			  <div class="tab_image_detail">{{i.title}} </div>
+			  <div title="{{i.title}}" class="dialog" id="dialog_{{i.id}}">
+				<img src="{% thumbnail i 626x520 %}">
+			  </div>
+			</div>
+			{% endfor %}
+      {% if resource.get_images.count > 1 %}
+			<ul class="tab_image_pager">
+			  {% for i in resource.get_images %}
+			  <li><a href="#tab_image_{{i.id}}" onclick="odp.trackEvent('View Small Image', 'Resource Url Image', 'Image', {{i.id}})"></a></li>
+			  {% endfor %}
+      {% endif %}
+			</ul>
+		{% else %}
+			<div class="tab_image" id="tab_image_1">
+			  <img src="/static/images/detail_no_image.png" alt="No Resource Images">
+			</div>
+        {% endif %}
+
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="tab_body" id="tab_extra_info">
+	  <div id="tab_data">
+		{% if resource.organization %}
+		<div class="info_label">Organization</div><div class="info_data"><a href="{{SITE_ROOT}}/opendata/search/?qs={{resource.organization}}" onclick="odp.trackEvent('Search Link', 'Resource Organization', 'Resource', {{resource.id}})">{{resource.organization}}</a></div>
+		{% endif %}
+		{% if resource.division %}
+		<div class="info_label">Division</div><div class="info_data"><a href="{{SITE_ROOT}}/opendata/search/?qs={{resource.division}}" onclick="odp.trackEvent('Search Link', 'Resource Division', 'Resource', {{resource.id}})">{{resource.division}}</a></div>
+		{% endif %}
+		{% if resource.release_date %}
+		<div class="info_label">Release Date</div><div class="info_data">{{resource.release_date}}</a></div>
+		{% endif %}
+		{% if resource.time_period %}
+		<div class="info_label">Valid Time Period</div><div class="info_data">{{resource.time_period}}</div>
+		{% endif %}
+		{% if resource.data_types.all.count > 0 %}
+		<div class="info_label">Data Types</div>
+		<div class="info_data">
+			{% for dt in resource.data_types.all %}
+				{{dt}}{% if not forloop.last %}, {% endif %}
+			{% endfor %}
+		</div>
+		{% endif %}
+		<div class="info_label">Categories</div>
+		<div class="info_data">
+		  {% for tag in resource.tags.all %}
+			<a href="{{SITE_ROOT}}/opendata/tag/{{tag.id}}" onclick="odp.trackEvent('Search Link', 'Resource Tag', 'Tag', '{{tag}}')">{{tag}}</a>{% if not forloop.last %}, {% endif %}
+		  {% endfor %}
+		</div>
+		<div class="info_label">Usage</div><div class="info_data">{{resource.usage}}</div>
+		<div class="info_label">Description</div><div class="info_data">{{resource.description|safe}}</div>
+		{% if resource.updates %}
+			<div class="info_label">Update Frequency</div><div class="info_data">{{resource.updates}}</a></div>
+		{% endif %}
+		{% if resource.area_of_interest %}
+			<div class="info_label">Area of Interest</div><div class="info_data">{{resource.area_of_interest}}</a></div>
+		{% endif %}
+		{% if resource.coord_sys.all.count > 0 %}
+			<div class="info_label">Coordinate Systems</div>
+			<div class="info_data">
+				  {% for cs in resource.coord_sys.all %}
+					{{cs}}{% if not forloop.last %}, {% endif %}
+				  {% endfor %}
+			</div>
+		{% endif %}
+		{% if resource.contact_phone %}
+			<div class="info_label">Contact Phone</div><div class="info_data">{{resource.contact_phone}}</a></div>
+		{% endif %}
+		{% if resource.contact_email %}
+			<div class="info_label">Contact Email</div><div class="info_data"><a href="mailto:{{resource.contact_email}}" target="_blank" onclick="odp.trackEvent('External Link', 'Resource Email', 'Email', '{{resource.contact_email}}')">{{resource.contact_email}}</a></div>
+		{% endif %}
+		{% if resource.contact_url %}
+			<div class="info_label">Contact Url</div><div class="info_data"><a href="{{resource.contact_url}}" target="_blank" onclick="odp.trackEvent('External Link', 'Resource Contact Url', 'Url', '{{resource.contact_url}}')">{{resource.contact_url}}</a></div>
+		{% endif %}
+        <div class="info_label">Date Added</div><div class="info_data">{{resource.created}}</div>
+        <div class="info_label">Last Update</div><div class="info_data">{{resource.last_updated}}</div>
+
+
+
+	  </div>
+	  <div class="tab_container" id="tab_image_container">
+		{% if resource.get_images %}
+			{% for i in resource.get_images %}
+			<div class="tab_image" id="tab_image_{{i.id}}">
+			  <img src="{% thumbnail i 218x273 %}" alt="{{i.title}}">
+			  <div class="tab_image_detail">{{i.title}} </div>
+			  <div title="{{i.title}}" class="dialog" id="dialog_{{i.id}}">
+				<img src="{% thumbnail i 626x520 %}">
+			  </div>
+			</div>
+			{% endfor %}
+	  {% if resource.get_images.count > 1 %}
+			<ul class="tab_image_pager">
+			  {% for i in resource.get_images %}
+			  <li><a href="#tab_image_{{i.id}}" onclick="odp.trackEvent('View Small Image', 'Resource Url Image', 'Image', {{i.id}})"></a></li>
+			  {% endfor %}
+	  {% endif %}
+			</ul>
+		{% else %}
+			<div class="tab_image" id="tab_image_1">
+			  <img src="/static/images/detail_no_image.png" alt="No Resource Images">
+			</div>
+		{% endif %}
+
+	  </div>
+	  <div class="clear_left"></div>
+    </div>
+  </div>
+
+  <div class="tab_container" id="content_data">
+    <ul class="tab_header">
+      <li class="tab_button"><a href="#data-tab">DATA</a></li>
+    </ul>
+    <div class="tab_body" id="#data-tab">
+    {% if resource.get_grouped_urls.Data %}
+      <div class="data_block">
+        <div class="url_header">
+          <div id="resource_icon_Data" class="url_image"></div><div class="url_label">Raw Data</div>
+        </div>
+        <ul>
+        {% for url in resource.get_grouped_urls.Data %}
+          <li class="url_link"><a href="{{url.url}}" target="_blank">{{url.url_label}}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if resource.get_grouped_urls.Documentation %}
+      <div class="data_block" id="data_documention">
+        <div class="url_header">
+          <div id="resource_icon_Documentation" class="url_image"></div><div class="url_label">Documentation</div>
+        </div>
+        <ul>
+        {% for url in resource.get_grouped_urls.Documentation %}
+          <li class="url_link"><a href="{{url.url}}" target="_blank">{{url.url_label}}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+      {% if resource.get_grouped_urls.API %}
+      <div class="data_block" id="data_api">
+        <div class="url_header">
+          <div id="resource_icon_API" class="url_image"></div><div class="url_label">APIs</div>
+        </div>
+        <ul>
+        {% for url in resource.get_grouped_urls.API %}
+          <li class="url_link"><a href="{{url.url}}" target="_blank">{{url.url_label}}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if resource.get_grouped_urls.Application %}
+      <div class="data_block" id="data_application">
+        <div class="url_header">
+          <div id="resource_icon_Application" class="url_image"></div><div class="url_label">Applications</div>
+        </div>
+        <ul>
+        {% for url in resource.get_grouped_urls.Application %}
+          <li class="url_link"><a href="{{url.url}}" target="_blank">{{url.url_label}}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    <div class="clear"></div>
+    </div>
+  </div>
+
+  <div class="tab_container" id="content_ratings">
+    <ul class="tab_header">
+      <li class="tab_button"><a href="#ratings-tab">RATINGS/COMMENTS</a></li>
+    </ul>
+    <div class="tab_body" id="ratings-tab">
+      <div id="social_meta">
+        <h3 id="avg_rating">Average Rating</h3>
+        <div id="detail_rating">
+          <span>{{resource.rating.votes|default:"0"}} Votes</span>
+          <input name="star_resource" type="radio" class="star star_resource" disabled="disabled"/>
+          <input name="star_resource" type="radio" class="star star_resource" disabled="disabled"/>
+          <input name="star_resource" type="radio" class="star star_resource" disabled="disabled"/>
+          <input name="star_resource" type="radio" class="star star_resource" disabled="disabled"/>
+          <input name="star_resource" type="radio" class="star star_resource" disabled="disabled"/>
+          <script type="text/javascript">
+            var rating_test = {{resource.rating.score|default:"0"}};
+            if (rating_test != 0) {
+                var rating = rating_test/{{resource.rating.votes}};
+                rating = Math.floor(rating);
+            	$("input:radio.star_resource")[rating-1].checked = 'checked';
+            }
+          </script>
+        </div>
+      </div>
+      <div id="comment_form">
+        <div>
+          {% if user.is_authenticated %}
+          {% get_comment_form for resource as form %}
+            <form id="resource_comment_form" action="{% comment_form_target %}" method="post">{% csrf_token %}
+              <div id="comment_field_errors"></div>
+              <input type="hidden" name="next" value="{{request.get_full_path}}" />
+              {% for field in form %}
+              {% if field.is_hidden %}
+                {{ field }}
+              {% else %}
+                {% ifequal field.name "rating" %}
+                <div id="rate_container">
+                  <div id="rate_label">Rate this data  </div><div id="rate">{{ field }}</div>
+                 </div>
+                {% else %}
+                  {% if field.errors %}{{ field.errors }}{% endif %}
+                  <div class="comment_field {% if field.errors %} error{% endif %}"
+                  {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}
+                  {% ifequal field.name "url" %} style="display:none;"{% endifequal %}
+                  {% ifequal field.name "name" %} style="display:none;"{% endifequal %}
+                  {% ifequal field.name "email" %} style="display:none;"{% endifequal %}>
+                  {{ field }}
+                  </div>
+                {% endifequal %}
+              {% endif %}
+              {% endfor %}
+              <div class="clear"></div>
+              <div class="submit">
+                <input type="submit" name="post" class="button" value="Post" />
+              </div>
+            </form>
+          {% else %}
+            <div>Please <a href="{{SITE_ROOT}}/accounts/login/?next={{ request.get_full_path }}">login</a> to add comments</div>
+          {% endif %}
+        </div>
+      </div>
+      <div id="comment_list">
+        <div id="comment_header">Comments</div>
+
+        {% get_comment_list for resource as comment_list %}
+        {% for comment in comment_list %}
+          <div class="comment_item">
+            <div class="comment_head">
+              <div class="comment_rating">
+                <input name="star_{{comment.id}}" type="radio" class="star star_{{comment.id}}" disabled="disabled"/>
+                <input name="star_{{comment.id}}" type="radio" class="star star_{{comment.id}}" disabled="disabled"/>
+                <input name="star_{{comment.id}}" type="radio" class="star star_{{comment.id}}" disabled="disabled"/>
+                <input name="star_{{comment.id}}" type="radio" class="star star_{{comment.id}}" disabled="disabled"/>
+                <input name="star_{{comment.id}}" type="radio" class="star star_{{comment.id}}" disabled="disabled"/>
+                <script type="text/javascript">
+                  var rating = {{comment.rating|default:"0"}};
+                  if (rating != 0) {
+                  	$("input:radio.star_{{comment.id}}")[{{comment.rating}}-1].checked = 'checked';
+                  }
+                </script>
+              </div>
+              <div class="comment_user">{{ comment.user.username }}</div>
+              <div class="comment_date">{{ comment.submit_date|date:"m/d/Y"}}</div>
+            </div>
+            <div class="comment_body">
+              {{ comment.comment }}
+              </div>
+              <div class="clear"></div>
+          </div>
+        {% empty %}
+          <div class="comment_item">No comments yet!</div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

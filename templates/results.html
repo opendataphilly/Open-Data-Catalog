@@ -1,0 +1,112 @@
+{% extends "template1.html" %}
+
+{% load thumbnail %}
+{% load sorting_tags %}
+{% load pagination_tags %}
+
+{% block title %} - Search Results{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+
+			odp.setupSortLinks();
+			odp.setupFilterLinks();
+		});
+	</script>
+{% endblock %}
+
+            
+{% block center_container %}
+
+
+
+	{% if tag %}
+
+        <a href="{{SITE_ROOT}}/ideas" class="resource" id="promotion_header">
+            <span class="icon_idea"></span> See how data sets are being used, in the <strong>Idea&nbsp;Gallery</strong>.
+        </a>
+	    <h1 id="results_label">{{ tag }}</h1>
+	{% else %}
+		{% if "search" in current_path and "?" in current_path %}
+			<h1 id="results_label">Search Results</h1>
+		{% else %}
+			<h1 id="results_label">All Records</h1>
+		{% endif %}
+	{% endif %}
+	<div id="results_header">
+		<div id="results_info">
+			<h2 id="count">{{results.count}} RESULTS</h2>
+			<div id="filter">
+				<ul>
+					<li id="filter_application"><a href="javascript:void()" onClick="odp.getFiltered('application');return false;" class="url_image" ></a></li>
+					<li id="filter_data"><a href="javascript:void()" onClick="odp.getFiltered('data');return false;" class="url_image"></a></li>
+					<li id="filter_api"><a href="javascript:void()" onClick="odp.getFiltered('api');return false;" class="url_image"></a></li>
+					<li class="info_label">FILTER:</li>
+				</ul>
+			</div>
+			<div id="sort">
+				<ul>
+					<li id="sort_rating_score">{% anchor rating_score %}</li>
+					<li id="sort_name">{% anchor name %}</li>
+					<li class="info_label">SORT:</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+{% autosort results %}
+{% autopaginate results 6 %}
+	<div id="results_list">
+		<ul>
+    {% if results.count > 0 %}
+
+		{% for r in results %}
+			<li class="resource">
+				<div id="url_types">
+					{% for u in r.get_distinct_url_types %}
+						<div class="url_image" id="resource_icon_{{u}}" alt="{{u}}" title="{{u}}"></div>
+					{% endfor %}</div>
+				<div id="rating_image">
+					<div id="rating">
+						<input name="star_r{{r.id}}" type="radio" class="star star_r{{r.id}}" disabled="disabled"/>
+						<input name="star_r{{r.id}}" type="radio" class="star star_r{{r.id}}" disabled="disabled"/>
+						<input name="star_r{{r.id}}" type="radio" class="star star_r{{r.id}}" disabled="disabled"/>
+						<input name="star_r{{r.id}}" type="radio" class="star star_r{{r.id}}" disabled="disabled"/>
+						<input name="star_r{{r.id}}" type="radio" class="star star_r{{r.id}}" disabled="disabled"/>
+						<script type="text/javascript">
+							var rating = {{r.rating.score|default:"0"}};
+							if (rating != 0) {
+								$("input:radio.star_r{{r.id}}")[{{r.rating.score}}-1].checked = 'checked';
+							}
+						</script>
+					</div>
+					{% if r.get_first_image %}
+						<a href="{{SITE_ROOT}}/opendata/resource/{{r.id}}/{{r.name|slugify}}"><img src="{% thumbnail r.get_first_image 80x80 autocrop %}" alt="{{r.get_first_image.title}}"></a>
+					{% else %}
+						<a href="{{SITE_ROOT}}/opendata/resource/{{r.id}}/{{r.name|slugify}}"><img src="/static/images/results_no_image.png" alt="No Resource Images"></a>
+					{% endif %}
+				</div>
+				<div id="resource_info">
+					<h3 id="resource_title"><a href="{{SITE_ROOT}}/opendata/resource/{{r.id}}/{{r.name|slugify}}">{{r}}</a></h3>
+					<h4 id="resource_desc">{{r.short_description|safe|default:"No description available."}}</h4>
+					<div id="resource_button"><a class="button" href="{{SITE_ROOT}}/opendata/resource/{{r.id}}/{{r.name|slugify}}">VIEW DETAILS</a></div>
+				</div>
+        <div class="clear"></div>
+			</li>
+		{% endfor %}
+    {% else %}
+      <li class="resource">
+        <div class="resource error_message">
+      Did your search return zero results? Try limiting or expanding your search terms.</div>
+      <h2 class="center">Need inspiration? Visit our <a href="{{SITE_ROOT}}/ideas/">Idea Gallery</a></h2>
+      </li>
+    {% endif %}
+
+		</ul>
+	</div>
+
+	<div id="pager">{% paginate %}</div>
+
+{% endblock %}

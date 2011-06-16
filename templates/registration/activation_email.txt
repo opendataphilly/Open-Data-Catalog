@@ -1,0 +1,14 @@
+
+Hello, thanks for registering.
+
+To activate your account click on the link below or copy and paste it into your web browser:
+
+http://{{ site }}/accounts/activate/{{ activation_key }}/
+
+Thanks,
+
+The OpenDataPhilly Crew
+
+*Note: If you didn't request this or no longer want to sign up, you don't need to do anything; you won't receive any more email from us, and the account will expire automatically in {{ expiration_days }} days.
+
+

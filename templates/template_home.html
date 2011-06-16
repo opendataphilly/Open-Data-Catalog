@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+{% include "sidebar.html" %}
+
+	<div id="center_container" class="home">
+{% include "loginlogout.html" %}
+
+    <h1>Site Header</h1>
+    <h2>
+		With some description here.
+    </h2>
+
+    {% include "searchbar.html" %}
+
+    <div id="center_content">
+			{% block center_container %}
+			{% endblock %}
+		</div>
+
+	</div>
+
+  {% include "footer.html" %}
+
+{% endblock %}

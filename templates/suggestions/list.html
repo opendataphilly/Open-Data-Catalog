@@ -1,0 +1,114 @@
+{% extends "template1.html" %}
+{% load ratings %}
+{% load pagination_tags %}
+{% load sorting_tags %}
+
+{% block title %} - Nominate Data{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.getTags();
+			odp.setupSearchInput();
+
+			odp.setupNominate();
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+	<h1 id="title">Nominate Data</h1>
+	<h2 id="description">Do you want to see data on particular topic? We realize that OpenDataPhilly does not contain links to
+		every available data resource - often because open data might not be available. Add a nomination for a
+		type of data and vote on other nominations. Together, let's build a list of areas where we'd like to see
+		increased availability of open data.
+		<br/><br/>
+		This page is for suggesting general areas where you'd like to see more open data. If you have a specific
+		data set to add, visit the <a href="{{SITE_ROOT}}/opendata/submit/" >Submit Data</a> page .</h2>
+
+
+	<div id="form_container" class="nomination_form">
+		<form id="nominate_form" action="post/" method="POST">
+			{% csrf_token %}
+				{% if form.errors %}
+				<div class="error_message resource">The form has errors. Please try again.</div>
+			{% endif %}
+			<table>
+				{{form.as_table}}
+				<tr><td>&nbsp;</td><td class="submit_footer"><span>Did you search for a similar nomination?</span><input class="button" type="submit" value="submit"/></td></tr>
+			</table>
+		</form>
+	</div>
+	<div id="center_header">
+      	<div id="n_search">
+        			<div id="n_search_img"></div>
+			<form method="GET" id="n_search_form" >
+				<div id="n_search_qs">
+					<input type="text" id="nqs" value="Search for nominations" />
+				</div>
+			</form>
+
+			{% if user.is_authenticated %}
+				<a id="nominate_button" class="button">Add a Nomination</a>
+			{% else %}
+				<a id="nominate_login" href="{{SITE_ROOT}}/accounts/login/?next={{ request.get_full_path }}">Login to Add your Nomination</a>
+			{% endif %}
+			<div class="clear"></div>
+		</div>
+    </div>
+	<div id="results_header">
+		<div id="results_info">
+			<div id="count">{{results.count}} RESULTS</div>
+            {% if user.is_authenticated %}
+			<div id="filter">
+				<ul>
+					<li id="filter_mine" class="nom_filter"><a href="javascript:void()" onClick="odp.getNomFiltered();return false;" class="url_image"></a></li>
+					<li class="info_label">FILTER:</li>
+				</ul>
+			</div>
+            {% endif %}
+			<div id="sort" class="sort_nomination">
+				<ul>
+					<li id="sort_rating_score">{% anchor rating_score Votes %}</li>
+					<li id="sort_suggested_date">{% anchor suggested_date Date %}<li>
+					<li class="info_label">SORT:</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+{% autosort suggestions %}
+{% autopaginate suggestions 6 %}
+	<div id="suggestions">
+		<ul id="suggestion_list">
+			{% for s in suggestions %}
+				{% rating_by_request request on s.rating as vote %}
+				<li class="resource">
+          <div id="nom_votes"><div id="nom_votes_number">{{s.rating_votes}}</div><div id="nom_votes_text">vote{% if s.rating_votes != 1 %}s{% endif %}</div></div>
+          <div id="resource_info">
+            <h3 id="nom_text">{{s}}</h3>
+            <div id="nom_byline">
+              {% if vote %}
+                <a id="nom_unvote" href="unvote/{{s.id}}/" onclick="odp.trackEvent('Nominate Data', 'Undo Vote', 'Suggestion', '{{s.id}}')">Undo vote</a>
+              {% endif %}
+              By <strong>{{s.suggested_by}}</strong> on <strong>{{s.suggested_date|date:"SHORT_DATE_FORMAT"}}</strong>
+            </div>
+            {% if user.is_authenticated %}
+				{% if not vote %}
+				  <a id="nom_voted" class="button" onclick="odp.trackEvent('Nominate Data', 'Vote', 'Suggestion', '{{s.id}}');window.location='vote/{{s.id}}'">VOTE FOR THIS</a>
+				{% else %}
+				  <div id="nom_voted">YOU VOTED!</div>
+				{% endif %}
+        {% else %}
+        <a class="nom_vote_login" href="{{SITE_ROOT}}/accounts/login/?next={{ request.get_full_path }}">Login to vote</a>
+            {% endif %}
+          </div>
+          <div class="clear"></div>
+				</li>
+			{% empty %}
+				<li class="resource">No nominations yet! What would you like to see added to this site?</li>
+			{% endfor %}
+		</ul>
+
+	</div>
+	<div id="pager">{% paginate %}</div>
+{% endblock %}
