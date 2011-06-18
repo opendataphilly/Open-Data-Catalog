@@ -50,6 +50,11 @@ urlpatterns = patterns('',
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt'}),
     
+    # API urls
+    (r'^api/resources/$', 'api.views.resources'),
+    (r'^api/resources/resource/(?P<resource_id>\d+)/$', 'api.views.resource'),                 
+    (r'^api/resources/tags/$', 'api.views.tags'),                       
+    (r'^api/resources/tags/(?P<tag_name>.*)$', 'api.views.by_tag'),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
