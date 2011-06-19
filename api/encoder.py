@@ -72,7 +72,7 @@ def encode_resource(resource_encoder):
                      "suggested_by" : obj.suggested_by.username,
                      "suggested_date" : obj.suggested_date,
                      "last_modified_date" : obj.last_modified_date,
-                     "rating" : obj.rating.score,
+                     "rating" : obj.rating.votes,
                      "url" : "/api/suggestions/%s/" %(obj.id)
                      }
         elif isinstance(obj, Idea):

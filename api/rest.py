@@ -41,7 +41,7 @@ def login_required(view_f):
             if (user != None):
                 print "Found the user!"
                 print user
-                request.META['REMOTE_USER'] = user
+                request.user = user
                 return view_f(request, *args, **kwargs)
         return http_unauth()
 
