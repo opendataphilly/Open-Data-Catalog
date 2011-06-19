@@ -118,3 +118,5 @@ def encode_resource(resource_encoder):
 def json_encode(obj, rsrc = short_resource_encoder):
     return j.dumps(obj, default = encode_resource(rsrc))
 
+def json_load(jsonstr):
+    return j.loads(jsonstr)

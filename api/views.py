@@ -5,6 +5,12 @@ from suggestions.models import Suggestion
 from datetime import datetime
 from encoder import *
 from rest import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+def http_badreq():
+    res = HttpResponse("Bad Request")
+    res.status_code = 400
+    return res
 
 @login_required
 def vote(request, suggestion_id):
@@ -25,11 +31,39 @@ def vote(request, suggestion_id):
 
     raise Http404
 
+def add_suggestion(user, text, remote_addr):
+    sug = Suggestion()
+    sug.suggested_by = user
+    sug.text = text
+            
+    sug.save()            
+    sug.rating.add(score=1, user=user, ip_address=remote_addr)
+            
+    return sug
+
+@login_required
+def add_suggestion_view(request):
+    json_string = request.raw_post_data
+    json_dict = json_load(json_string)
+
+    if (json_dict.has_key("text") == False):
+        return http_badreq()
+
+    text = json_dict["text"]
+
+    return HttpResponse(json_encode(add_suggestion(request.user, text, request.META['REMOTE_ADDR'])))
+
 def suggestion(request, suggestion_id):
     return HttpResponse(json_encode(Suggestion.objects.filter(id = suggestion_id)[0]))
 
+@csrf_exempt
 def suggestions(request):
-    return HttpResponse(json_encode(list(Suggestion.objects.all())))
+    if (request.method == 'POST'):
+        return add_suggestion_view(request)
+    elif (request.method == 'GET'):
+        return HttpResponse(json_encode(list(Suggestion.objects.all())))
+    else:
+        raise Http404
 
 def ideas(request):
     return HttpResponse(json_encode(list(Idea.objects.all()), tiny_resource_encoder))
