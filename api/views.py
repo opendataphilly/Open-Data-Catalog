@@ -1,8 +1,15 @@
 # Create your views here.
 from django.http import HttpResponse
 from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea
+from suggestions.models import Suggestion
 from datetime import datetime
 from encoder import *
+
+def suggestion(request, suggestion_id):
+    return HttpResponse(json_encode(Suggestion.objects.filter(id = suggestion_id)[0]))
+
+def suggestions(request):
+    return HttpResponse(json_encode(list(Suggestion.objects.all())))
 
 def ideas(request):
     return HttpResponse(json_encode(list(Idea.objects.all()), tiny_resource_encoder))

@@ -1,4 +1,5 @@
 from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea, IdeaImage
+from suggestions.models import Suggestion
 import simplejson as j
 
 def tiny_resource_encoder(obj):
@@ -66,6 +67,14 @@ def encode_resource(resource_encoder):
     def encode_resource_with_encoder(obj):
         if isinstance(obj, Resource):
             return resource_encoder(obj)
+        elif isinstance(obj, Suggestion):
+            return { "text" : obj.text,
+                     "suggested_by" : obj.suggested_by.username,
+                     "suggested_date" : obj.suggested_date,
+                     "last_modified_date" : obj.last_modified_date,
+                     "rating" : obj.rating.score,
+                     "url" : "/api/suggestions/suggestion/%s/" %(obj.id)
+                     }
         elif isinstance(obj, Idea):
             return { "title" : obj.title,
                      "description" : obj.description,

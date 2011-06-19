@@ -55,6 +55,10 @@ urlpatterns = patterns('',
     (r'^api/resources/resource/(?P<resource_id>\d+)/$', 'api.views.resource'),                 
     (r'^api/resources/tags/$', 'api.views.tags'),                       
     (r'^api/resources/tags/(?P<tag_name>.*)$', 'api.views.by_tag'),
+    (r'^api/ideas/$', 'api.views.ideas'),
+    (r'^api/ideas/idea/?P<idea_id>\d+/$', 'api.views.idea'),
+    (r'^api/suggestions/$', 'api.views.suggestions'),
+    (r'^api/suggestions/suggestion/(?P<suggestion_id>\d+)/$', 'api.views.suggestion'),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
