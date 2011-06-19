@@ -1,14 +1,15 @@
 # Create your views here
 from django.http import HttpResponse, Http404
-from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea
+from opendata.models import *
+from opendata.views import send_email
 from suggestions.models import Suggestion
 from datetime import datetime
 from encoder import *
 from rest import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-def http_badreq():
-    res = HttpResponse("Bad Request")
+def http_badreq(body = ""):
+    res = HttpResponse("Bad Request\n" + body)
     res.status_code = 400
     return res
 
@@ -82,3 +83,79 @@ def resource(request, resource_id):
 
 def resources(request):
     return HttpResponse(json_encode(list(Resource.objects.all()), short_resource_encoder))
+
+def safe_key_getter(dic):
+    def annon(key, f = lambda x: x):
+        if dic.has_key(key):
+            return f(dic[key])
+        else:
+            return None
+    return annon
+
+@csrf_exempt
+def submit(request):
+    if (request.method == 'POST'):
+        json_dict = safe_key_getter(json_load(request.raw_post_data))
+    
+        coord_list = json_dict("coord_system")
+        type_list = json_dict("types")
+        format_list = json_dict("formats")
+        update_frequency_list = json_dict("update_frequency")
+
+        coords, types, formats, updates ="", "", "", ""
+
+        if (coord_list == None):
+            return http_badreq("coord_system should be a list")
+        if (type_list == None):
+            return http_badreq("types should be a list")
+        if (format_list == None):
+            return http_badreq("formats should be a list")
+        if (update_frequency_list == None):
+            return http_badreq("update_frequency should be a list")
+
+            
+        for c in coord_list:
+            coords = coords + " EPSG:" + CoordSystem.objects.get(pk=c).EPSG_code.__str__()
+        
+        for t in type_list:
+            types = types + " " + UrlType.objects.get(pk=t).url_type        
+            
+        for f in format_list:
+            formats = formats + " " + DataType.objects.get(pk=f).data_type
+
+        for u in update_frequency_list:
+            if u:
+                updates = updates + " " + UpdateFrequency.objects.get(pk=u).update_frequency
+                
+        data = {
+            "submitter": request.user.username,
+            "submit_date": datetime.now(),
+            "dataset_name": json_dict("dataset_name"),
+            "organization": json_dict("organization"),
+            "copyright_holder": json_dict("copyright_holder"),
+            "contact_email": json_dict("contact_email"),
+            "contact_phone": json_dict("contact_phone"),
+            "url": json_dict("url"),
+            "time_period": json_dict("time_period"),
+            "release_date": json_dict("release_date"),
+            "area_of_interest": json_dict("area_of_interest"),
+            "update_frequency": updates,
+            "coord_system": coords,
+            "types": types,
+            "formats": formats,
+            "usage_limitations": json_dict("usage_limitations"),
+            "collection_process": json_dict("collection_process"),
+            "data_purpose": json_dict("data_purpose"),
+            "intended_audience": json_dict("intended_audience"),
+            "why": json_dict("why"),
+            }
+        
+        for key in data:
+            if (data[key] == None or (hasattr(data[key], "len") and len(data[key]) == 0)):
+                return http_badreq(key + " is empty or not defined")
+
+        send_email(request.user, data)
+
+        return HttpResponse("Created")
+    else:
+        raise Http404

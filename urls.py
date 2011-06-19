@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     (r'^robots\.txt$', direct_to_template, {'template': 'robots.txt'}),
     
-    # API urls
+    # API urls (all are GET urls unless stated otherwise)
     (r'^api/resources/$', 'api.views.resources'),
     (r'^api/resources/(?P<resource_id>\d+)/$', 'api.views.resource'),                 
     (r'^api/tags/$', 'api.views.tags'),                       
@@ -62,6 +62,8 @@ urlpatterns = patterns('',
     (r'^api/suggestions/(?P<suggestion_id>\d+)/$', 'api.views.suggestion'),
     # PUT to vote, DELETE to remove
     (r'^api/suggestions/(?P<suggestion_id>\d+)/vote$', 'api.views.vote'),
+    # POST to create
+    (r'^api/submit/$', 'api.views.submit'),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
