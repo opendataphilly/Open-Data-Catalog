@@ -5,7 +5,7 @@ import simplejson as j
 def tiny_resource_encoder(obj):
         return { "name" : obj.name,
                  "id" : obj.id,
-                 "url" : "/api/resources/resource/%s/" %(obj.id)
+                 "url" : "/api/resources/%s/" %(obj.id)
                  }
 
 
@@ -24,7 +24,7 @@ def short_resource_encoder(obj):
                  "rating" : obj.rating.score,                 
                
                  "id" : obj.id,
-                 "url" : "/api/resources/resource/%s/" %(obj.id)
+                 "url" : "/api/resources/%s/" %(obj.id)
                  }
 
 def full_resource_encoder(obj):
@@ -73,7 +73,7 @@ def encode_resource(resource_encoder):
                      "suggested_date" : obj.suggested_date,
                      "last_modified_date" : obj.last_modified_date,
                      "rating" : obj.rating.score,
-                     "url" : "/api/suggestions/suggestion/%s/" %(obj.id)
+                     "url" : "/api/suggestions/%s/" %(obj.id)
                      }
         elif isinstance(obj, Idea):
             return { "title" : obj.title,
@@ -108,7 +108,7 @@ def encode_resource(resource_encoder):
             return obj.data_type
         elif isinstance(obj, Tag):
             return { "name" : obj.tag_name,
-                     "url" : "/api/resources/tags/%s/" % obj.tag_name }
+                     "url" : "/api/tags/%s/" % obj.tag_name }
         elif hasattr(obj, "strftime"):
             return obj.strftime("%Y-%m-%d")
         else:
