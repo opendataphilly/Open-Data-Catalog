@@ -59,8 +59,8 @@ urlpatterns = patterns('',
     (r'^api/ideas/?P<idea_id>\d+/$', 'api.views.idea'),
     (r'^api/suggestions/$', 'api.views.suggestions'),
     (r'^api/suggestions/(?P<suggestion_id>\d+)/$', 'api.views.suggestion'),
+    # PUT to vote, DELETE to remove
     (r'^api/suggestions/(?P<suggestion_id>\d+)/vote$', 'api.views.vote'),
-    (r'^api/suggestions/(?P<suggestion_id>\d+)/unvote$', 'api.views.unvote'),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
