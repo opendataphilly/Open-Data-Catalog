@@ -1,8 +1,14 @@
 # Create your views here.
 from django.http import HttpResponse
-from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage
+from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea
 from datetime import datetime
 from encoder import *
+
+def ideas(request):
+    return HttpResponse(json_encode(list(Idea.objects.all()), tiny_resource_encoder))
+
+def idea(request, idea_id):
+    return HttpResponse(json_encode(Idea.objects.filter(id = idea_id)[0]))
 
 def tags(request):
     return HttpResponse(json_encode(list(Tag.objects.all())))

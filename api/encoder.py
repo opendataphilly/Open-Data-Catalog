@@ -1,5 +1,12 @@
-from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage
+from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea, IdeaImage
 import simplejson as j
+
+def tiny_resource_encoder(obj):
+        return { "name" : obj.name,
+                 "id" : obj.id,
+                 "url" : "/api/resources/resource/%s/" %(obj.id)
+                 }
+
 
 def short_resource_encoder(obj):
         return { "name" : obj.name,
@@ -59,6 +66,17 @@ def encode_resource(resource_encoder):
     def encode_resource_with_encoder(obj):
         if isinstance(obj, Resource):
             return resource_encoder(obj)
+        elif isinstance(obj, Idea):
+            return { "title" : obj.title,
+                     "description" : obj.description,
+                     "author" : obj.author,
+                     "created_by" : obj.created_by.username,
+                     "created_by_date" : obj.created_by_date,
+                     "updated_by" : obj.updated_by.username,
+                     "updated_by_date" : obj.updated_by_date,
+                     "resources" : list(obj.resources.all()),
+                     "images" : list(IdeaImage.objects.filter(idea = obj).all())
+                     }
         elif isinstance(obj, Url):
             return { "url" : obj.url,
                      "label" : obj.url_label,
@@ -70,7 +88,7 @@ def encode_resource(resource_encoder):
                      "description": obj.description,
                      "EPSG_code" : obj.EPSG_code
                      }
-        elif isinstance(obj, UrlImage):
+        elif isinstance(obj, UrlImage) or isinstance(obj, IdeaImage):
             return { "title" : obj.title,
                      "source" : obj.source,
                      "source_url" : obj.source_url,
