@@ -55,7 +55,7 @@ urlpatterns = patterns('',
     (r'^api/resources/(?P<resource_id>\d+)/$', 'api.views.resource'),                 
     (r'^api/resources/search$', 'api.views.resource_search'),
     (r'^api/tags/$', 'api.views.tags'),                       
-    (r'^api/tags/(?P<tag_name>.*)$', 'api.views.by_tag'),
+    (r'^api/tags/(?P<tag_name>.*)/$', 'api.views.by_tag'),
     (r'^api/ideas/$', 'api.views.ideas'),
     (r'^api/ideas/(?P<idea_id>\d+)/$', 'api.views.idea'),
     # GET to list, POST to created

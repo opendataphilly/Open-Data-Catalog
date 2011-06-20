@@ -170,7 +170,7 @@ class TagTest(RestTestCase):
     def test_one_empty(self):
         tag1 = self.mktag("tag1")
 
-        self.assertEmptyList("/api/tags/%s" % tag1.tag_name)
+        self.assertEmptyList("/api/tags/%s/" % tag1.tag_name)
 
     def test_one(self):
         tag1 = self.mktag("tag1")
@@ -185,8 +185,8 @@ class TagTest(RestTestCase):
         rsrc2.tags.add(tag2)
         rsrc3.tags.add(tag2)
         
-        self.verify_ids(self.get("/api/tags/%s" % tag1.tag_name),[rsrc1,rsrc2])
-        self.verify_ids(self.get("/api/tags/%s" % tag2.tag_name),[rsrc2,rsrc3])
+        self.verify_ids(self.get("/api/tags/%s/" % tag1.tag_name),[rsrc1,rsrc2])
+        self.verify_ids(self.get("/api/tags/%s/" % tag2.tag_name),[rsrc2,rsrc3])
 
 class IdeaTest(RestTestCase):
     def test_empty_case(self):

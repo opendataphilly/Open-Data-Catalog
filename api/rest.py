@@ -39,8 +39,6 @@ def login_required(view_f):
             auth = request.META['HTTP_AUTHORIZATION']
             user = parse_auth_string(auth)
             if (user != None):
-                print "Found the user!"
-                print user
                 request.user = user
                 return view_f(request, *args, **kwargs)
         return http_unauth()
