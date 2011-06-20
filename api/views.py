@@ -16,8 +16,8 @@ def http_badreq(body = ""):
 @login_required
 def vote(request, suggestion_id):
     suggestion = Suggestion.objects.get(pk=suggestion_id)
+    remote_addr = request.META['REMOTE_ADDR']
     if request.method == 'PUT' and suggestion != None:
-        remote_addr = request.META['REMOTE_ADDR']
         did_vote = suggestion.rating.get_rating_for_user(request.user, remote_addr)
         
         if did_vote == None:
@@ -26,7 +26,9 @@ def vote(request, suggestion_id):
         return HttpResponse(json_encode(suggestion))
 
     elif request.method == "DELETE" and suggestion != None:
-        suggestion.rating.delete(user, request.META['REMOTE_ADDR'])
+        vote = suggestion.rating.get_ratings().filter(user = request.user)
+        if vote:
+            vote.delete()
                 
         return HttpResponse(json_encode(suggestion))
 
@@ -55,7 +57,12 @@ def add_suggestion_view(request):
     return HttpResponse(json_encode(add_suggestion(request.user, text, request.META['REMOTE_ADDR'])))
 
 def suggestion(request, suggestion_id):
-    return HttpResponse(json_encode(Suggestion.objects.filter(id = suggestion_id)[0]))
+    objs = Suggestion.objects.filter(pk = suggestion_id)
+
+    if objs and len(objs) == 1:
+        return HttpResponse(json_encode(objs[0]))
+    else:
+        raise Http404
 
 @csrf_exempt
 def suggestions(request):
@@ -78,7 +85,11 @@ def ideas(request):
     return HttpResponse(json_encode(list(Idea.objects.all()), tiny_resource_encoder))
 
 def idea(request, idea_id):
-    return HttpResponse(json_encode(Idea.objects.filter(id = idea_id)[0]))
+    obj = Idea.objects.filter(id = idea_id)
+    if obj and len(obj) == 1:
+        return HttpResponse(json_encode(obj[0]))
+    else:
+        raise Http404
 
 def tags(request):
     return HttpResponse(json_encode(list(Tag.objects.all())))
@@ -96,7 +107,11 @@ def resource_search(request):
         return http_badreq("Must specify qs search param")
 
 def resource(request, resource_id):
-    return HttpResponse(json_encode(Resource.objects.filter(id=resource_id, is_published = True)[0], full_resource_encoder))
+    rsrc = Resource.objects.filter(id=resource_id, is_published = True)
+    if rsrc and len(rsrc) == 1:
+        return HttpResponse(json_encode(rsrc[0], full_resource_encoder))
+    else:
+        raise Http404
 
 def resources(request):
     return HttpResponse(json_encode(list(Resource.objects.filter(is_published = True)), short_resource_encoder))

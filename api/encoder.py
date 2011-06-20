@@ -44,7 +44,7 @@ def full_resource_encoder(obj):
                  "contact_email" : obj.contact_email,
                  "contact_url" : obj.contact_url,
 
-                 "updates" : obj.updates.update_frequency,
+                 "updates" : obj.updates.update_frequency if obj.updates else None,
                  "update_frequency" : obj.update_frequency,
                  "area_of_interest" : obj.area_of_interest,
                  "is_published" : obj.is_published,
@@ -73,10 +73,12 @@ def encode_resource(resource_encoder):
                      "suggested_date" : obj.suggested_date,
                      "last_modified_date" : obj.last_modified_date,
                      "rating" : obj.rating.votes,
-                     "url" : "/api/suggestions/%s/" %(obj.id)
+                     "url" : "/api/suggestions/%s/" %(obj.id),
+                     "id" : obj.pk
                      }
         elif isinstance(obj, Idea):
             return { "title" : obj.title,
+                     "id" : obj.pk,
                      "description" : obj.description,
                      "author" : obj.author,
                      "created_by" : obj.created_by.username,
