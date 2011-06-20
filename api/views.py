@@ -66,6 +66,14 @@ def suggestions(request):
     else:
         raise Http404
 
+def search_suggestions(request):
+    if 'qs' in request.GET:
+        qs = request.GET['qs'].replace("+"," ")
+
+        return HttpResponse(json_encode(list(Suggestion.objects.filter(text__icontains=qs))))
+    else:
+        return http_badreq("Missing required parameter qs")
+
 def ideas(request):
     return HttpResponse(json_encode(list(Idea.objects.all()), tiny_resource_encoder))
 
@@ -78,11 +86,20 @@ def tags(request):
 def by_tag(request, tag_name):
     return HttpResponse(json_encode(list(Resource.objects.filter(tags__tag_name = tag_name))))
 
+def resource_search(request):
+    if 'qs' in request.GET:
+        qs = request.GET['qs'].replace("+", " ")
+        search_resources = Resource.search(qs) 
+
+        return HttpResponse(json_encode(list(search_resources), short_resource_encoder))
+    else:
+        return http_badreq("Must specify qs search param")
+
 def resource(request, resource_id):
-    return HttpResponse(json_encode(Resource.objects.filter(id=resource_id)[0], full_resource_encoder))
+    return HttpResponse(json_encode(Resource.objects.filter(id=resource_id, is_published = True)[0], full_resource_encoder))
 
 def resources(request):
-    return HttpResponse(json_encode(list(Resource.objects.all()), short_resource_encoder))
+    return HttpResponse(json_encode(list(Resource.objects.filter(is_published = True)), short_resource_encoder))
 
 def safe_key_getter(dic):
     def annon(key, f = lambda x: x):
