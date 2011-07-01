@@ -13,6 +13,7 @@ class Suggestion(models.Model):
     suggested_by = models.ForeignKey(User, related_name="suggested_by")
     suggested_date = models.DateTimeField(auto_now_add=True)
     last_modified_date = models.DateTimeField(auto_now=True)
+    completed = models.BooleanField(default=False)
     
     rating = RatingField(range=1, allow_delete=True, can_change_vote=True)
 

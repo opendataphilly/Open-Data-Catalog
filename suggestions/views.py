@@ -58,3 +58,12 @@ def remove_vote(request, suggestion_id):
     suggestion = Suggestion.objects.get(pk=suggestion_id)
     suggestion.rating.delete(request.user, request.META['REMOTE_ADDR'])
     return HttpResponseRedirect('../../')
+
+@login_required
+def close(request, suggestion_id):
+    suggestion = Suggestion.objects.get(pk=suggestion_id)
+    suggestion.completed = True;
+    suggestion.save()
+    return HttpResponseRedirect('../../')
+
+

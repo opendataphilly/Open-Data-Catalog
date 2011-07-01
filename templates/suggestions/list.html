@@ -87,19 +87,26 @@
           <div id="resource_info">
             <h3 id="nom_text">{{s}}</h3>
             <div id="nom_byline">
-              {% if vote %}
+              {% if vote and not s.completed %}
                 <a id="nom_unvote" href="unvote/{{s.id}}/" onclick="odp.trackEvent('Nominate Data', 'Undo Vote', 'Suggestion', '{{s.id}}')">Undo vote</a>
               {% endif %}
               By <strong>{{s.suggested_by}}</strong> on <strong>{{s.suggested_date|date:"SHORT_DATE_FORMAT"}}</strong>
             </div>
-            {% if user.is_authenticated %}
-				{% if not vote %}
-				  <a id="nom_voted" class="button" onclick="odp.trackEvent('Nominate Data', 'Vote', 'Suggestion', '{{s.id}}');window.location='vote/{{s.id}}'">VOTE FOR THIS</a>
-				{% else %}
-				  <div id="nom_voted">YOU VOTED!</div>
-				{% endif %}
-        {% else %}
-        <a class="nom_vote_login" href="{{SITE_ROOT}}/accounts/login/?next={{ request.get_full_path }}">Login to vote</a>
+            {% if not s.completed %}
+                {% if user.is_authenticated %}
+				    {% if not vote %}
+				      <a id="nom_voted" class="button" onclick="odp.trackEvent('Nominate Data', 'Vote', 'Suggestion', '{{s.id}}');window.location='vote/{{s.id}}'">VOTE FOR THIS</a>
+				    {% else %}
+				      <div id="nom_voted">YOU VOTED!</div>
+				    {% endif %}
+                {% else %}
+                    <a class="nom_vote_login" href="{{SITE_ROOT}}/accounts/login/?next={{ request.get_full_path }}">Login to vote</a>
+                {% endif %}
+                {% if perms.opendata.change_resource %}
+                    <a class="button" onclick="odp.trackEvent('Nominate Data', 'Vote', 'Suggestion', '{{s.id}}');window.location='close/{{s.id}}'">Close Nomination</a>
+                {% endif %}
+            {% else %}
+                <div id="closed">Nomination Closed</div>
             {% endif %}
           </div>
           <div class="clear"></div>
