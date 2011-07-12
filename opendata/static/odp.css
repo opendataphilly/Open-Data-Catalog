@@ -491,6 +491,11 @@ form .button {
 	width: 91px;
 	background:url(/static/images/icon_yourvotes.png) 0 0;
 }
+#results_info  #filter_done.nom_filter .url_image {
+	height: 45px;
+	width: 91px;
+	background:url(/static/images/icon_completed.png) 0 0;
+}
 #results_info #sort_suggested_date .url_image {
 	background:url(/static/images/icon_date.png) 0 0;
 }

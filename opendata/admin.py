@@ -77,7 +77,7 @@ class IdeaAdmin(admin.ModelAdmin):
         obj.save()
 
 class SuggestionAdmin(admin.ModelAdmin):
-    list_display = ['text', 'suggested_by']
+    list_display = ['text', 'suggested_by', 'completed']
     search_fields = ['text', 'suggested_by']
 
 class SubmissionAdmin(admin.ModelAdmin):    

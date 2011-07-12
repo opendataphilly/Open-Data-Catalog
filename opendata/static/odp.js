@@ -179,6 +179,11 @@ var odp = {
             filter_mine.addClass("url_image");
             filter_mine.innerHTML = '';
         }
+        var filter_done = $("#filter_done > a")
+        if (filter_done) {
+            filter_done.addClass("url_image");
+            filter_done.innerHTML = '';
+        }
         
         if ($.query.get('filter')) {
             st = $.query.get('filter');
@@ -207,13 +212,13 @@ var odp = {
             window.location = window.location.pathname + newQuery;
         }
     },
-    getNomFiltered: function () {
-        if ($.query.get('filter') == 'mine') {
+    getNomFiltered: function (value) {
+        if ($.query.get('filter') == value) {
             var newQuery = "" + $.query.remove('filter').remove('page');
             window.location = window.location.pathname + newQuery;
         } 
         else {
-            var newQuery = "" + $.query.set('filter', 'mine').set('sort', 'suggested_date').set('dir', 'desc').remove('page');
+            var newQuery = "" + $.query.set('filter', value).set('sort', 'suggested_date').set('dir', 'desc').remove('page');
             window.location = window.location.pathname + newQuery;
         }
     },

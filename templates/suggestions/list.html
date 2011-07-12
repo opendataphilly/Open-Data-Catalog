@@ -62,8 +62,8 @@
             {% if user.is_authenticated %}
 			<div id="filter">
 				<ul>
-					<li id="filter_mine" class="nom_filter"><a href="javascript:void()" onClick="odp.getNomFiltered();return false;" class="url_image"></a></li>
-					<li class="info_label">FILTER:</li>
+                    <li id="filter_done" class="nom_filter"><a href="javascript:void()" onClick="odp.getNomFiltered('done');return false;" class="url_image"></a></li>
+					<li id="filter_mine" class="nom_filter"><a href="javascript:void()" onClick="odp.getNomFiltered('mine');return false;" class="url_image"></a></li>					<li class="info_label">FILTER:</li>
 				</ul>
 			</div>
             {% endif %}
@@ -107,6 +107,11 @@
                 {% endif %}
             {% else %}
                 <div id="closed">Nomination Closed</div>
+                {% for r in s.resources.all %}
+                <div><a target="_blank" href="{{SITE_ROOT}}/opendata/resource/{{r.id}}/{{r.name|slugify}}">{{r}}</a></div>
+                {% empty %}
+                <div><a target="_blank" href="{{SITE_ROOT}}/_admin_/suggestions/suggestion/{{s.id}}">Add links to resources</a></div>
+                {% endfor %}
             {% endif %}
           </div>
           <div class="clear"></div>

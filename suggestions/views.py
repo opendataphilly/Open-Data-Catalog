@@ -13,12 +13,16 @@ def list_all(request):
         suggestions = suggestions.filter(text__icontains=qs)
     if 'filter' in request.GET:
         try:
-            user = User.objects.get(username=request.user)
-            for s in suggestions:
-                voted = s.rating.get_rating_for_user(user=user, ip_address=request.META['REMOTE_ADDR'])
-                print s.id, voted
-                if not voted:
-                    suggestions = suggestions.exclude(pk=s.id)
+            f = request.GET['filter']
+            if f == 'mine':
+                user = User.objects.get(username=request.user)
+                for s in suggestions:
+                    voted = s.rating.get_rating_for_user(user=user, ip_address=request.META['REMOTE_ADDR'])
+                    if not voted:
+                        suggestions = suggestions.exclude(pk=s.id)
+            if f == 'done':                  
+                suggestions = suggestions.exclude(completed=False)
+                
         except:
             pass    
 
