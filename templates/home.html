@@ -23,7 +23,7 @@
 <ul id="home_twitter_feed">
   {% for tweet in tweets %}
   <li class="twitter_item">
-    <p><a href="http://www.twitter.com/opendataphilly/statuses/{{tweet.id}}" target="_blank" class="date">{{tweet.date|date:"l, F d, Y"}}</a>, <span class="time">{{tweet.date|date:"g:ia"}}</span></p>
+    <p><a href="http://www.twitter.com/{{TWITTER_USER}}/statuses/{{tweet.id}}" target="_blank" class="date">{{tweet.date|date:"l, F d, Y"}}</a>, <span class="time">{{tweet.date|date:"g:ia"}}</span></p>
     <p class="post">
       {{tweet.text|urlize}}
     </p>
