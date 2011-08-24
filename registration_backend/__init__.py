@@ -4,6 +4,8 @@ from registration.backends.default import DefaultBackend
 from registration.forms import RegistrationForm,RegistrationFormUniqueEmail
 from django.db import transaction
 from opendata.models import ODPUserProfile
+from widgets import *
+from fields import *
 
 class ODPRegistrationForm(RegistrationForm):
       
@@ -13,7 +15,8 @@ class ODPRegistrationForm(RegistrationForm):
                                 error_messages={ 'invalid': "This value must contain only letters" }, required=True)
     organization = forms.CharField(max_length=255, required=False, initial="optional")
     can_notify = forms.BooleanField(required=False, label="", help_text="Would you like to receive e-mail updates regarding OpenDataPhilly?")
-  
+    recaptcha = ReCaptchaField(label="")    
+
 class ODPBackend(DefaultBackend):
 
     def get_form_class(self, request):

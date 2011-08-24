@@ -8,7 +8,7 @@
 		$(document).ready(function () {
       		odp.getTags();
 			odp.setupSearchInput();
-            $('table').append($('<tr>',{html:'<td></td><td><input type="submit" value="Register" class="button" /></td>'}))
+            $('#registration_table').append($('<tr>',{html:'<td></td><td><input type="submit" value="Register" class="button" /></td>'}))
             $('input:checkbox').next('br').remove() 
 		});
 	</script>
@@ -33,7 +33,7 @@
 {% endif %}
   <form method="post" action="{{SITE_ROOT}}/accounts/register/">
   {% csrf_token %}
-  <table>
+  <table id="registration_table">
   {{form}}
   </table>
   </form>

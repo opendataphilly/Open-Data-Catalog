@@ -2,6 +2,8 @@ import os
 # Django settings for opendata project.
 
 SITE_ROOT = ""
+RECAPTCHA_PUBLIC_KEY = ""
+RECAPTCHA_PRIVATE_KEY = ""
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

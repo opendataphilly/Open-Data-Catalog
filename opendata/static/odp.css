@@ -55,7 +55,7 @@ margin-top: -14px;
 .ui-dialog .ui-dialog-content {
   padding: 10px;
   text-align: center;
-  background-color: #fff;
+  background-color: #fff;register/complete/
 }
 .ui-dialog {
   padding: 0;
@@ -370,7 +370,7 @@ margin-top: -14px;
 #title {
     font-size: 1.1em;
     font-weight: bold;
-    padding-bottom: 10px;
+    padding-bottom: 10px;register/complete/
 }
 #description {
     padding-bottom: 10px;
@@ -403,7 +403,7 @@ margin-top: -14px;
   	text-align:center;
 }
 
-#tab_image_container .tab_image_pager  li {
+#tab_image_container .tab_image_pager  li {register/complete/
   	display: inline-block;
   	float:none;
 }
@@ -476,6 +476,16 @@ form .button {
     float: left;
     margin: 0 5px;
 }
+
+/* -------------------------------------------------
+
+	Registration
+
+   ------------------------------------------------- */
+#registration_table div {
+    padding-bottom:0px;
+}
+
 
 /* -------------------------------------------------
 
