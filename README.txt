@@ -18,13 +18,7 @@ Dependancies from web:
 	wget https://github.com/dcramer/django-ratings/tarball/d0ae149d112c7e5f9f40bb04028ceac4bf4b0e0d
 	wget https://github.com/simplegeo/python-oauth2/tarball/master
     wget http://pypi.python.org/packages/source/r/recaptcha-client/recaptcha-client-1.0.6.tar.gz
-	
-
-Dependancies that require patching:
-    git clone git://github.com/directeur/django-sorting.git
-		Apply patch to django-sorting: https://github.com/directeur/django-sorting/issues#issue/8
-			-including comment by Alsaihn
-		sudo cp django-sorting -R /usr/local/lib/python2.6/dist-packages/django_sorting
+	wget https://github.com/mlavin/django-sorting/tarball/master
 
 		
 Update apache2 conf
