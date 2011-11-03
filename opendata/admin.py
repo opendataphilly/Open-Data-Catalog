@@ -2,6 +2,7 @@ from datetime import datetime
 from opendata.models import *
 from comments.models import *
 from suggestions.models import *
+from contest.models import *
 from django.contrib import admin
 
 class UrlImageInline(admin.TabularInline):
@@ -31,6 +32,8 @@ class ResourceAdmin(admin.ModelAdmin):
     readonly_fields = ['created_by', 'created', 'last_updated_by', 'last_updated']
     inlines = [UrlInline,]
     
+    verbose_name = 'Resource Url'
+    verbose_name_plural = 'Resource Urls'
     list_display = ('name', 'organization', 'release_date', 'is_published')
     search_fields = ['name', 'description', 'organization']
     list_filter = ['tags', 'url__url_type', 'is_published']
@@ -57,6 +60,8 @@ class CoordSystemAdmin(admin.ModelAdmin):
     list_display = ('EPSG_code', 'name')
     search_fields = ['name', 'EPSG_code', 'description']
 
+    verbose_name = 'Resource Url'
+    verbose_name_plural = 'Resource Urls'
 class IdeaAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields':[('title', 'author'),  'description', ('created_by', 'created_by_date'), 
@@ -80,16 +85,39 @@ class SuggestionAdmin(admin.ModelAdmin):
     list_display = ['text', 'suggested_by', 'completed']
     search_fields = ['text', 'suggested_by']
 
-class SubmissionAdmin(admin.ModelAdmin):    
+class SubmissionAdmin(admin.ModelAdmin):   
+    verbose_name = 'Resource Url'
+    verbose_name_plural = 'Resource Urls' 
     list_display = ['user', 'sent_date']
     search_fields = ['email_text', 'user']
     readonly_fields = ['user',]
 
 class ODPUserProfileAdmin(admin.ModelAdmin):
-    list_display = ['user',]
+    list_display = ['user', 'can_notify',]
     fieldsets = [(None, {'fields':['user', 'organization', 'can_notify']}),]
     readonly_fields = ['user',]
+    list_filter = ['can_notify',]
     
+class EntryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'nominator', 'contest']
+    search_fields = ['title', 'nominator', 'description']
+    list_filter = ['contest__title', ]
+
+class EntryInline(admin.StackedInline):
+    model = Entry
+    extra = 1
+    verbose_name_plural = 'Entries'
+
+class ContestAdmin(admin.ModelAdmin):
+    list_display = ['title', 'start_date', 'end_date']
+    search_fields = ['title', 'rules']
+    inlines = [EntryInline, ]
+
+class VoteAdmin(admin.ModelAdmin):
+    list_display= ['entry', 'user', 'timestamp']
+    search_fields = ['entry']
+    list_filter = ['entry',]
+
 admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(ODPUserProfile, ODPUserProfileAdmin)
 admin.site.register(Suggestion, SuggestionAdmin)
@@ -103,6 +131,10 @@ admin.site.register(DataType)
 admin.site.register(Url, UrlAdmin)
 admin.site.register(UrlImage, UrlImageAdmin)
 admin.site.register(Resource, ResourceAdmin)
+
+admin.site.register(Contest, ContestAdmin)
+admin.site.register(Entry, EntryAdmin)
+admin.site.register(Vote, VoteAdmin)
 
 admin.site.register(CommentWithRating)
 

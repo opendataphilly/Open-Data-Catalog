@@ -1,0 +1,43 @@
+{% extends "contest/contest_template.html" %}
+
+{% load humanize %}
+
+{% block body_id %}id="contest"{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			
+            $(".vote").click(function (evt) {
+                event_id = this.id.split('_')[1];
+                location = "{{SITE_ROOT}}/contest/entry/" + event_id + "/vote/";
+            });
+
+		});
+	</script>
+{% endblock %}
+
+{% block center_container %}
+
+<div id="contest_entry" class="resource">
+
+    <div style="float:right;" id="entry_votes">
+        <div id="nom_votes_number">{{entry.vote_count|default:0}}</div>
+        <div id="nom_votes_text">vote{% if entry.vote_count != 1 %}s{% endif %}</div>
+    </div>
+
+    <h1 id="title">{{entry.title}}</h1> 
+    <div class="entry_label">Current Standing</div><div class="entry_data" >{{entry.get_place|ordinal}} Place</div>
+    <div class="entry_label">Nominated By</div><div class="entry_data">{% if entry.nominator_image %}<a href="{{entry.nominator_link}}" target="_blank"><img height="50" src="{{entry.nominator_image.url}}" /> {% endif %}{{entry.nominator}}</a></div>
+    <div class="entry_label">Description</div><div class="entry_data">{{entry.description|safe}}</div>
+
+    {% if entry.contest.has_started %} {% if not entry.contest.has_ended %}
+        <div style="position:relative;bottom:0;float:none;width:87px;" id="entry_buttons">
+            <div id="vote_{{entry.id}}" class="vote">VOTE</div>
+        </div>
+    {% endif %}{% endif %}
+
+</div>
+
+
+{% endblock %}

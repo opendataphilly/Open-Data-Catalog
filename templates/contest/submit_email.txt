@@ -1,0 +1,10 @@
+Date: {{submit_date}}
+
+Organization Name: {{org_name}}
+Organization URL: {{org_url}}
+Contact Name: {{contact_person}}
+Contact Phone Number: {{contact_phone}}
+Contact Email: {{contact_email}}
+Data Set: {{data_set}}
+Uses Within Organization: {{data_use}}
+Mission Benefits: {{data_mission}}

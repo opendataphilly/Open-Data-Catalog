@@ -1,0 +1,24 @@
+{% extends "contest/contest_template.html" %}
+
+{% block body_id %}id="contest"{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {            
+            $(".contest_menu").removeClass('selected');
+            $("#menu_rules").addClass('selected');
+		});
+	</script>
+{% endblock %}
+
+
+{% block center_container %}
+
+    <div id="contest_rules" class="resource">
+
+    {{contest.rules|safe}}
+
+    </div>
+
+
+{% endblock %}

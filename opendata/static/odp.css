@@ -278,7 +278,7 @@ margin-top: -14px;
 	background:url(/static/images/icon_api.png) 0 0;
 }
 
-#results_info  #sort_rating_score .url_image{
+#results_info  #sort_rating_score .url_image, #results_info  #sort_vote_count .url_image{
 	background:url(/static/images/icon_ratings.png) 0 0;
 }
 
@@ -286,7 +286,7 @@ margin-top: -14px;
 	background:url(/static/images/icon_votesort.png) 0 0;
 }
 
-#results_info  #sort_name .url_image{
+#results_info  #sort_name .url_image, #results_info #sort_title .url_image{
 	background:url(/static/images/icon_alpha.png) 0 0;
 }
 
@@ -516,6 +516,210 @@ form .button {
 	
    ------------------------------------------------- */
 
+/* -------------------------------------------------
+	
+	Contest
+	
+   ------------------------------------------------- */
+#contest .orange {color: #DF5800;}
+#contest .white_link {color: #FFF; font-style:italic; border-bottom: 1px dotted #bbb}
+
+#contest_header {
+    margin-bottom:175px;
+}
+.winner #contest_header{
+    margin-bottom:0;
+}
+#contest_header #logo {
+    float: left;
+}
+#contest_desc {
+    width: 440px;
+    height: 170px;
+    padding-left:150px;
+}
+#contest_menu {
+    float: right;
+    text-align: right;
+    clear: both;
+    margin-top: 20px;
+}
+#contest_menu li.selected {
+    font-weight: bold;
+}
+#contest_info {
+    position: absolute;
+    z-index: 10;
+    top: 170px;
+    width: 100%;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+#contest #center_container {
+    width: 100%
+}
+#contest #results_header {
+    clear:both;
+    margin-left: 20px;
+    margin-right: 50px;
+}
+#contest_info #box_wrapper {
+    position: relative;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.info_box {
+    float: left;
+    width: 290px;
+    height: 150px;
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid black;
+}
+#days_left {
+    float:left;
+    width: 75px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 65px;
+    text-align: center;
+}
+#days_left #days {
+    font-size: 2.4em;
+    font-weight: bold;
+}
+#days_left #left {
+}
+
+#days_left #voting_over {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#date_box #days_header {
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+.days_label {    
+    font-weight: bold;
+}
+.days_data {
+    padding-bottom: 9px;
+}
+.days_over {
+    font-size: 0.9em;
+    line-height: 17px;
+}
+
+#info_text {
+    float:left;    
+}
+#nomination_text {
+    margin-bottom: 25px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid black;
+}
+
+#contest_list li {
+    float:left;
+    width: 26%;
+    margin: 1.5%;
+	height: 260px;
+    position: relative;
+}
+#contest_list .winner_text{
+    height:900px;
+    padding-right: 30px;
+}
+#contest_list .winner_text_small {
+    padding-top: 20px;
+}
+#contest_list .winner_text_large {
+    font-weight: bold;
+}
+#contest_list .first{
+    width: 59.5%;
+}
+#contest_entries {
+    clear:both;
+    margin-left: 20px;
+    margin-right: 50px;
+}
+#entry_logo {
+	background: #FFF;
+	border: 1px solid black;
+	float: right;
+	height: 80px;
+	position: relative;
+	right: -25px;
+	top: -30px;
+	width: 90px;
+}
+#entry_buttons {
+    float:left;  
+	position: absolute;
+	bottom: 15px;
+}
+#entry_buttons div{
+    margin: 10px 10px 0;
+    padding: 5px 12px;
+    font-size: 0.85em;
+    text-align: center;
+    background-color: #888;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.winner #entry_buttons {
+    bottom: 36px;
+}
+.first #entry_buttons {
+    bottom: 20px;
+}
+#entry_votes {
+    padding: 10px;
+	border: 1px solid black;
+	text-align:center;
+    width: 60px;
+}
+li.resource #entry_votes {
+	position: absolute;
+	right: 15px;
+	bottom: 15px;
+}
+
+#contest_form {
+	float: left;
+	margin: 12px 5px 32px;
+	padding: 27px 40px 21px;
+}
+#contest_form form label {
+	width: 220px;
+	padding-right: 40px;
+	vertical-align: top;
+	display: block;
+	font-weight: bold;
+	float: left;
+}
+#contest_form form p input {
+	width: 350px;
+	height: 20px;
+}
+#contest_form form p textarea {
+	width: 346px;
+	height: 100px;
+}
+
+#contest_entry {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.entry_label {
+    padding-top: 15px;
+    font-weight: bold;
+}
 
         
 /* -------------------------------------------------

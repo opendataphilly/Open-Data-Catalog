@@ -1,0 +1,147 @@
+{% extends "contest/contest_template.html" %}
+
+{% load humanize %}
+
+{% block body_id %}id="contest"{% endblock %}
+{% block body_class %}base_body winner{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.setupSortLinks();
+            
+            $(".contest_menu").removeClass('selected');
+            $("#menu_winner").addClass('selected');
+
+            $(".details").click(function (evt) {
+                event_id = this.id.split('_')[1];
+                location = "{{SITE_ROOT}}/contest/entry/" + event_id + "/";
+            });
+		});
+	</script>
+{% endblock %}
+
+{% block header_description %}
+
+    <div></div>
+
+{% endblock %}
+
+{% block body_top %}
+
+
+{% endblock %}
+
+{% block center_container %}
+
+
+<div id="contest_entries">
+    <ul id="contest_list">
+
+        <li class="winner_text">
+            <div class="winner_text_large">Congratulations to the winners of {{contest.title}}!</div>
+            <div class="winner_text_small">We are excited about the huge number of people who supported the contest! Thank you 
+                for becoming involved in the process of open government through the release of data. </div>
+            
+            <div class="winner_text_small">Visit <a href="{{SITE_ROOT}}/">OpenDataCatalog</a> and continue to support the open data community!</div>
+        </li>
+
+        <li class="resource first">
+			<div id="entry_logo">{% if entries.0.nominator_image %}<a href="{{entries.0.nominator_link}}" target="_blank"><img src='{{entries.0.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">{{entries.0.get_place|ordinal}} PLACE</div>
+                <div id="entry_title">{{entries.0.title}}</div>
+                <div id="entry_nominator"><a href="{{entries.0.nominator_link}}" target="_blank">{{entries.0.nominator}}</a></div>
+                <div id="entry_shortdesc" style="height: 150px;">{{entries.0.description|safe|truncatewords_html:55}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entries.0.id}}" class="details">DETAILS</div>
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entries.0.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.0.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+
+
+        <li class="resource winner">
+			<div id="entry_logo">{% if entries.1.nominator_image %}<a href="{{entries.1.nominator_link}}" target="_blank"><img src='{{entries.1.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">{{entries.1.get_place|ordinal}} PLACE</div>
+                <div id="entry_title">{{entries.1.title}}</div>
+                <div id="entry_nominator"><a href="{{entries.1.nominator_link}}" target="_blank">{{entries.1.nominator}}</a></div>
+                <div id="entry_shortdesc">{{entries.1.short_description}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entries.1.id}}" class="details">DETAILS</div>
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entries.1.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.1.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+
+        <li class="resource winner">
+			<div id="entry_logo">{% if entries.2.nominator_image %}<a href="{{entries.2.nominator_link}}" target="_blank"><img src='{{entries.2.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">{{entries.2.get_place|ordinal}} PLACE</div>
+                <div id="entry_title">{{entries.2.title}}</div>
+                <div id="entry_nominator"><a href="{{entries.2.nominator_link}}" target="_blank">{{entries.2.nominator}}</a></div>
+                <div id="entry_shortdesc">{{entries.2.short_description}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entries.2.id}}" class="details">DETAILS</div>
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entries.2.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.2.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+
+        <li class="resource winner honerable">
+			<div id="entry_logo">{% if entries.3.nominator_image %}<a href="{{entries.3.nominator_link}}" target="_blank"><img src='{{entries.3.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">Honorable Mention</div>
+                <div id="entry_title">{{entries.3.title}}</div>
+                <div id="entry_nominator"><a href="{{entries.2.nominator_link}}" target="_blank">{{entries.3.nominator}}</a></div>
+                <div id="entry_shortdesc">{{entries.3.short_description}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entries.3.id}}" class="details">DETAILS</div>
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entries.3.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.3.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+
+
+        <li class="resource winner honerable">
+			<div id="entry_logo">{% if entries.4.nominator_image %}<a href="{{entries.4.nominator_link}}" target="_blank"><img src='{{entries.4.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">Honorable Mention</div>
+                <div id="entry_title">{{entries.4.title}}</div>
+                <div id="entry_nominator"><a href="{{entries.4.nominator_link}}" target="_blank">{{entries.4.nominator}}</a></div>
+                <div id="entry_shortdesc">{{entries.4.short_description}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entries.4.id}}" class="details">DETAILS</div>
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entries.4.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.4.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+
+
+    </ul>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+Thank you for submitting a dataset to the contest. 
+We will review your submission and contact you with any additional questions. 
+
+Information you sent us: 
+
+Date: {{submit_date}}
+
+Organization Name: {{org_name}}
+Organization URL: {{org_url}}
+Contact Name: {{contact_name}}
+Contact Phone Number: {{contact_phone}}
+Contact Email: {{contact_email}}
+Data Set: {{data_set}}
+Uses Within Organization: {{data_use}}
+Mission Benefits: {{data_mission}}
+
+Thanks!
+
+The OpenDataCatalog Team
+

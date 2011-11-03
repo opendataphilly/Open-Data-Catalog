@@ -1,0 +1,57 @@
+{% extends "contest/contest_template.html" %}
+
+{% block body_id %}id="contest"{% endblock %}
+
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {            
+            $(".contest_menu").removeClass('selected');
+            $("#menu_nominate").addClass('selected');
+		});
+	</script>
+{% endblock %}
+
+{% block header_description %}
+
+    <div>{{contest.title}} is a contest to do something. Nominate a data set now by filling out the following form. </div>
+
+{% endblock %}
+
+{% block center_container %}
+
+<div id="contest_form" class="resource">
+
+<div id="nomination_text">Complete contest rules are available <a href="{{SITE_ROOT}}/contest/rules/">here</a>. 
+    Brief statement about how things will work. </div>
+
+<form action="{{SITE_ROOT}}/contest/add/" method="POST">   
+	{% csrf_token %}
+	{% if form.errors %}
+	<div class="error_message resource">All fields below are required. Please add any missing information and click Submit again.</div>
+	{% endif %}
+
+    <p><label for="id_org_name">Organization Name:</label> {{form.org_name}}</p>
+    <p><label for="id_org_url">Organization Url:</label> {{form.org_url}}</p>
+    <p><label for="id_contact_person">Contact Person:</label> {{form.contact_person}}</p>
+    <p><label for="id_contact_phone">Contact Phone Number:</label> {{form.contact_phone}}</p>
+
+    <p><label style="height:50px;" for="id_contact_email">Contact Email:</label> {{form.contact_email}}
+        <br>A copy of the nomination will be sent to this email address.
+    </p>
+    <p><label style="height:50px;" for="id_data_set">Data Set to Nominate:</label> {{form.data_set}}
+        <br>For example, a civic advocacy group nominates data on polling locations.
+    </p>
+
+    <p><label for="id_data_use">If this data set were available, how would your organization use it?</label> {{form.data_use}}</p>
+    <p><label for="id_data_mission">How would this data set contribute to your organization's mission?</label> {{form.data_mission}}</p>
+
+	<input class="button" type="submit" value="submit"/>
+	<input class="button" type="reset" value="reset" onclick="window.location='{{current_path}}'"/>
+		
+</form>
+
+</div>
+
+
+{% endblock %}

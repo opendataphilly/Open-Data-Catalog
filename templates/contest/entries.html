@@ -1,0 +1,92 @@
+{% extends "contest/contest_template.html" %}
+
+{% load sorting_tags %}
+{% load humanize %}
+
+{% block body_id %}id="contest"{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.setupSortLinks();
+            
+            $(".contest_menu").removeClass('selected');
+            $("#menu_vote").addClass('selected');
+
+            $(".details").click(function (evt) {
+                event_id = this.id.split('_')[1];
+                location = "{{SITE_ROOT}}/contest/entry/" + event_id + "/";
+            });
+            $(".vote").click(function (evt) {
+                event_id = this.id.split('_')[1];
+                location = "{{SITE_ROOT}}/contest/entry/" + event_id + "/vote/";
+            });
+
+		});
+	</script>
+{% endblock %}
+
+{% block header_description %}
+
+    <div>{{contest.title}} is a contest to do some things and win something. 
+        Here's where the entries came from and why we think you should vote.</div>
+
+{% endblock %}
+
+{% block center_container %}
+
+
+<div id="results_header">
+    {% for message in messages %}
+        <div style="border: 1px solid rgb(221, 221, 221); padding: 10px; background-color: white; margin: 5px; text-align: center;"> {{message|safe}}</div>
+     {% endfor %}
+	<div id="results_info">
+        {% if not contest.has_ended %}
+		<div id="info_text">You may vote once per {{contest.vote_frequency}} days and must be <a href="{{SITE_ROOT}}/accounts/register/">registered</a> to vote. </div>
+        {% endif %}
+		<div id="sort">
+			<ul>
+				<li id="sort_vote_count">{% anchor vote_count %}</li>
+				<li id="sort_title">{% anchor title %}</li>
+				<li class="info_label">SORT:</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+{% autosort entries %}
+<div id="contest_entries">
+    <ul id="contest_list">
+    {% for entry in entries %}
+        <li class="resource">
+			<div id="entry_logo">{% if entry.nominator_image %}<a href="{{entry.nominator_link}}" target="_blank"><img src='{{entry.nominator_image.url}}'/></a>{% endif %}</div>
+            <div id="entry_info">
+                <div id="entry_place">{{entry.get_place|ordinal}} PLACE</div>
+                <div id="entry_title">{{entry.title}}</div>
+                <div id="entry_nominator"><a href="{{entry.nominator_link}}" target="_blank">{{entry.nominator}}</a></div>
+                <div id="entry_shortdesc">{{entry.short_description}}</div>
+            </div>
+            <div id="entry_buttons">
+                <div id="details_{{entry.id}}" class="details">DETAILS</div>
+                {% if contest.has_started %} {% if not contest.has_ended %}
+                    <div id="vote_{{entry.id}}" class="vote">VOTE</div>
+                {% endif %} {% endif %}
+            </div>
+            <div id="entry_votes">
+                <div id="nom_votes_number">{{entry.vote_count|default:0}}</div>
+                <div id="nom_votes_text">vote{% if entry.vote_count != 1 %}s{% endif %}</div>
+            </div>
+
+        </li>
+    {% empty %}
+        <li class="resource" style="width:95%;text-align:center;">
+            We are currently accepting <a href="{{SITE_ROOT}}/contest/add/">nominations</a> for the OpenDataRace. 
+            Voting on nominated data sets will begin October 3rd!
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+
+{% endblock %}
