@@ -76,7 +76,7 @@ def search_results(request):
     search_resources = Resource.objects.all()
     if 'qs' in request.GET:
         qs = request.GET['qs'].replace("+", " ")
-        search_resources = search_resources.filter(Q(name__icontains=qs) | Q(description__icontains=qs) | Q(organization__icontains=qs) | Q(division__icontains=qs))
+        search_resources = Resource.search(qs, search_resources)
     if 'filter' in request.GET:
         f = request.GET['filter']
         search_resources = search_resources.filter(url__url_type__url_type__iexact=f).distinct()
@@ -142,25 +142,31 @@ def suggest_content(request):
             }
             
             
-            subject, user_email = 'OpenDataPhilly - Data Submission', (request.user.first_name + " " + request.user.last_name, request.user.email)
-            text_content = render_to_string('submit_email.txt', data)
-            text_content_copy = render_to_string('submit_email_copy.txt', data)
-            mail_managers(subject, text_content)
-
-            msg = EmailMessage(subject, text_content_copy, to=user_email)
-            msg.send()
-            
-            sug_object = Submission()
-            sug_object.user = request.user
-            sug_object.email_text = text_content
-            
-            sug_object.save()
-            
+            send_email(request.user, data)
             return render_to_response('thanks.html', context_instance=RequestContext(request))
     else: 
         form = SubmissionForm()
         
     return render_to_response('submit.html', {'form': form}, context_instance=RequestContext(request))
+
+def send_email(user, data):
+    subject, user_email = 'OpenDataPhilly - Data Submission', (user.first_name + " " + user.last_name, user.email)
+    text_content = render_to_string('submit_email.txt', data)
+    text_content_copy = render_to_string('submit_email_copy.txt', data)
+
+    mail_managers(subject, text_content)
+    
+    msg = EmailMessage(subject, text_content_copy, to=user_email)
+    msg.send()
+    
+    sug_object = Submission()
+    sug_object.user = user
+    sug_object.email_text = text_content
+    
+    sug_object.save()
+
+    return sug_object
+
 
 
 ## views called by js ajax for object lists
