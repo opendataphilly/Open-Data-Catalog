@@ -1,0 +1,59 @@
+{% extends "contest/contest_template.html" %}
+
+{% load sorting_tags %}
+{% load humanize %}
+
+{% block body_id %}id="contest"{% endblock %}
+
+{% block js_ready %}
+	<script>
+		$(document).ready(function () {
+			odp.setupSortLinks();
+            
+            $(".contest_menu").removeClass('selected');
+            $("#menu_table").addClass('selected');
+		});
+	</script>
+{% endblock %}
+
+{% block header_description %}
+
+    <div>{{contest.title}} is a contest to do some things and win something. 
+        Here's where the entries came from and why we think you should vote. </div>
+
+{% endblock %}
+
+{% block center_container %}
+
+
+
+
+{% autosort entries %}
+<div id="contest_entries_wrapper">
+    <table id="entry_list_table">
+        <tr>
+            <th>{% anchor is_visible "Included" %}</th>
+            <th>{% anchor vote_count "Votes" %}</th>
+            <th>{% anchor data_owner "Agency" %}</th>
+            <th>{% anchor nominator "Nominated By" %}</th>
+            <th>{% anchor title "Data Set" %}</th>
+            <th>{% anchor status "Remarks" %}</th>
+        </tr>
+        {% for entry in entries %}
+            <tr>
+                <td width="7%">{{ entry.is_visible|yesno:"<div id='included'>Yes</div>,<div id='not_included'>No</div>"|safe }}</td>
+                <td width="5%">{{ entry.vote_count }}</td>
+                <td width="15%">{{ entry.data_owner }}</td>
+                <td width="15%">{{ entry.nominator }}</td>
+                <td width="20%"><a href="{{SITE_ROOT}}/contest/entry/{{entry.id}}/">{{ entry.title }}</a></td>
+                <td width="38%">{{ entry.status }}
+                    {% if not entry.is_visible %}, {{ entry.rejected_reason }}{% endif %} 
+                    {{entry.links|urlize}} {{entry.comments}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+
+{% endblock %}

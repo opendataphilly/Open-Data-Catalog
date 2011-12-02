@@ -9,14 +9,21 @@ from datetime import datetime
 
 def get_entries(request, contest_id=1):
     contest = Contest.objects.get(pk=contest_id)
-    entries = Entry.objects.filter(contest=contest)
+    entries = Entry.objects.filter(contest=contest, is_visible=True)
     if not request.GET.__contains__('sort'):
         entries = entries.order_by('-vote_count')
     return render_to_response('contest/entries.html', {'contest': contest, 'entries': entries}, context_instance=RequestContext(request))
 
+def get_entries_table(request, contest_id=1):
+    contest = Contest.objects.get(pk=contest_id)
+    entries = Entry.objects.filter(contest=contest)
+    if not request.GET.__contains__('sort'):
+        entries = entries.order_by('-vote_count')
+    return render_to_response('contest/entry_table.html', {'contest': contest, 'entries': entries}, context_instance=RequestContext(request))
+
 def get_winners(request, contest_id=1):
     contest = Contest.objects.get(pk=contest_id)
-    entries = Entry.objects.filter(contest=contest).order_by('-vote_count')
+    entries = Entry.objects.filter(contest=contest, is_visible=True).order_by('-vote_count')
     return render_to_response('contest/winners.html', {'contest': contest, 'entries': entries}, context_instance=RequestContext(request))
 
 def get_rules(request, contest_id=1):

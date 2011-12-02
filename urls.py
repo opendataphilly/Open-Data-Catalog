@@ -47,6 +47,7 @@ urlpatterns = patterns('',
     (r'^contest/add/$', 'contest.views.add_entry'),
     (r'^contest/entry/(?P<entry_id>\d+)/$', 'contest.views.get_entry'),
     (r'^contest/entry/(?P<entry_id>\d+)/vote/$', 'contest.views.add_vote'),
+    (r'^contest/entries/$', 'contest.views.get_entries_table'),
     (r'^contest/winners/$', 'contest.views.get_winners'),
 
     (r'^feeds/$', 'opendata.views.feed_list'),
