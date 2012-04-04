@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.core import serializers
 from django.core.mail import send_mail, mail_managers, EmailMessage
 from django.template import RequestContext
@@ -84,7 +84,7 @@ def search_results(request):
     return render_to_response('results.html', {'results': search_resources}, context_instance=RequestContext(request))
 
 def resource_details(request, resource_id, slug=""):
-    resource = Resource.objects.get(pk=resource_id)
+    resource = get_object_or_404(Resource, pk=resource_id)
     return render_to_response('details.html', {'resource': resource}, context_instance=RequestContext(request)) 
     
 
