@@ -28,7 +28,7 @@ def home(request):
     utc = pytz.utc
     local = timezone('US/Eastern')
 
-    if not tweets:    
+    if not tweets and settings.TWITTER_USER:    
         tweets = twitter.Api().GetUserTimeline( settings.TWITTER_USER )[:4]
         if tweets.count < 4:
             tweet_cache = []
