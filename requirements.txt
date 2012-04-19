@@ -1,0 +1,16 @@
+Django==1.3
+PIL==1.1.7
+django-pagination==1.0.7
+django-ratings==0.3.6
+django-registration==0.8
+django-sorting==0.1
+gunicorn==0.14.2
+httplib2==0.7.4
+oauth2==1.5.211
+psycopg2==2.4.5
+pytz==2012c
+recaptcha-client==1.0.6
+simplejson==2.5.0
+sorl-thumbnail==3.2.5
+twitter==1.7.2
+wsgiref==0.1.2
