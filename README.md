@@ -66,7 +66,7 @@ To create the scheme we use django "syncdb" command
         python manage.py syncdb
 
 ## Running a server
-We installed gunicorn as part of the installation process. All you need to do know is start it:
+We installed gunicorn as part of the installation process. All you need to do now is start it:
 
         gunicorn_django
 
