@@ -18,6 +18,8 @@ from fabric import api as fab
 #               recommended, as the sample config supports it.
 DB_USER='catalog'
 
+GIT_REPO='https://github.com/azavea/Open-Data-Catalog.git'
+
 
 def apt_dependencies():
     fab.sudo('apt-get install --yes sendmail postgresql python-pip libpq-dev '
@@ -40,8 +42,7 @@ def virtualenv():
 def source():
     with fab.cd('opendatacatalog'):
         fab.run('rm -rf Open-Data-Catalog || true')
-        fab.run('git clone '
-                'https://github.com/openlexington/Open-Data-Catalog.git')
+        fab.run('git clone %s' % (GIT_REPO,))
 
 
 def pip_from_app():
