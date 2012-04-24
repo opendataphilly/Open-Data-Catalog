@@ -1,3 +1,8 @@
+# Prep your dev environment
+
+    Install virtualbox: https://www.virtualbox.org/
+    Build a Linux VM from Ubuntu 12.04: http://www.ubuntu.com/
+
 # Installing the Open Data Catalog
 ## Non-Python Dependencies
 
