@@ -168,6 +168,7 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'django.contrib.sitemaps',
     'django.contrib.humanize',
+    'south',
     'opendata',
     'registration',
     'sorl.thumbnail',
