@@ -72,6 +72,7 @@ Update the database settings in settings.py. You'll probably have to update "nam
 To create the scheme we use django "syncdb" command
 
         python manage.py syncdb
+        python manage.py migrate
 
 ## Running a server
 We installed gunicorn as part of the installation process. All you need to do now is start it:
