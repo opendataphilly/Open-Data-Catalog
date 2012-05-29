@@ -42,7 +42,7 @@ class ResourceAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.created_by = request.user
-            obj.created = datetime.now()
+            obj.created = datetime.datetime.now()
         
         obj.last_updated_by = request.user
         obj.save()
@@ -76,7 +76,7 @@ class IdeaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.created_by = request.user
-            obj.created_by_date = datetime.now()
+            obj.created_by_date = datetime.datetime.now()
         
         obj.updated_by = request.user
         obj.save()

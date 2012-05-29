@@ -81,6 +81,8 @@ class Resource(models.Model):
     data_types = models.ManyToManyField(DataType, blank=True, null=True)
         
     # More Info
+    bbox = models.TextField()
+    atype = models.CharField(max_length=200,default="csw:Record")
     description = models.TextField()
     contact_phone = models.CharField(max_length=50, blank=True)
     contact_email = models.CharField(max_length=255, blank=True)
