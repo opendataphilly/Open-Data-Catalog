@@ -22,8 +22,8 @@ MANAGERS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'catalog',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'odc.db',                      # Or path to database file if using sqlite3.
         'USER': 'catalog',                      # Not used with sqlite3.
         'PASSWORD': 'passw0rd',                  # Not used with sqlite3.
         'HOST': '',                      # Set to 'localhost' for localhost. Not used with sqlite3.
@@ -183,69 +183,68 @@ INSTALLED_APPS = (
     
 )
 
-# Set this to the location of the pycsw config file
-CSW_CONFIG = None
-
-MD_CORE_MODEL = {
-    'typename': 'pycsw:CoreMetadata',
-    'outputschema': 'http://pycsw.org/metadata',
-    'mappings': {
-        'pycsw:Identifier': 'id',
-        'pycsw:Typename': 'atype',
-        'pycsw:Schema': 'name',
-        'pycsw:InsertDate': 'release_date',
-        'pycsw:XML': 'description',
-        'pycsw:AnyText': 'description',
-        'pycsw:BoundingBox': 'bbox',
-        'pycsw:Links': 'name',
-        'pycsw:Keywords': 'short_description',
-        'pycsw:Title': 'name',
-        'pycsw:Contributor': 'created_by_id',
-        'pycsw:Source': 'created_by_id',
-        'pycsw:Language': 'metadata_notes',
-        'pycsw:Creator': 'created_by_id',
-        'pycsw:Type': 'name',
-        'pycsw:Modified': 'created',
-        'pycsw:AccessConstraints': 'name',
-        'pycsw:Abstract': 'name',
-        'pycsw:Relation': 'name',
-        'pycsw:Date': 'created',
-        'pycsw:Publisher': 'created_by_id',
-        'pycsw:Format': 'name',
-        # 'pycsw:MdSource': 'mdsource',
-        # 'pycsw:KeywordType': 'keywordstype',
-        # 'pycsw:CRS': 'crs',
-        # 'pycsw:AlternateTitle': 'title_alternate',
-        # 'pycsw:RevisionDate': 'date_revision',
-        # 'pycsw:CreationDate': 'date_creation',
-        # 'pycsw:PublicationDate': 'date_publication',
-        # 'pycsw:OrganizationName': 'organization',
-        # 'pycsw:SecurityConstraints': 'securityconstraints',
-        # 'pycsw:ParentIdentifier': 'parentidentifier',
-        # 'pycsw:TopicCategory': 'topicategory',
-        # 'pycsw:ResourceLanguage': 'resourcelanguage',
-        # 'pycsw:GeographicDescriptionCode': 'geodescode',
-        # 'pycsw:Denominator': 'denominator',
-        # 'pycsw:DistanceValue': 'distancevalue',
-        # 'pycsw:DistanceUOM': 'distanceuom',
-        # 'pycsw:TempExtent_begin': 'time_begin',
-        # 'pycsw:TempExtent_end': 'time_end',
-        # 'pycsw:ServiceType': 'servicetype',
-        # 'pycsw:ServiceTypeVersion': 'servicetypeversion',
-        # 'pycsw:Operation': 'operation',
-        # 'pycsw:CouplingType': 'couplingtype',
-        # 'pycsw:OperatesOn': 'operateson',
-        # 'pycsw:OperatesOnIdentifier': 'operatesonidentifier',
-        # 'pycsw:OperatesOnName': 'operatesoname',
-        # 'pycsw:Degree': 'degree',
-        # 'pycsw:OtherConstraints': 'otherconstraints',
-        # 'pycsw:Classification': 'classification',
-        # 'pycsw:ConditionApplyingToAccessAndUse': 'conditionapplyingtoaccessanduse',
-        # 'pycsw:Lineage': 'lineage',
-        # 'pycsw:ResponsiblePartyRole': 'responsiblepartyrole',
-        # 'pycsw:SpecificationTitle': 'specificationtitle',
-        # 'pycsw:SpecificationDate': 'specificationdate',
-        # 'pycsw:SpecificationDateType': 'specificationdatetype',
+# pycsw configuration
+CSW = {
+    'server': {
+        'home': '.',
+        'url': 'http://localhost:8000/csw/',
+        'mimetype': 'application/xml; charset=UTF-8',
+        'encoding': 'UTF-8',
+        'language': 'en-US',
+        'maxrecords': '10',
+#        'loglevel': 'DEBUG',
+#        'logfile': '/tmp/pycsw.log',
+#        'ogc_schemas_base': 'http://foo',
+#        'federatedcatalogues': 'http://geo.data.gov/geoportal/csw/discovery',
+#        'pretty_print': 'true',
+#        'gzip_compresslevel': '8',
+#        'domainquerytype': 'range',
+#        'domaincounts': 'true',
+        'profiles': 'apiso,dif,fgdc,atom',
+    },
+    'manager': {
+        'transactions': 'false',
+        'allowed_ips': '127.0.0.1',
+    },
+    'metadata:main': {
+        'identification_title': 'Open Data Catalog CSW',
+        'identification_abstract': 'Open Data Catalog is an open data catalog based on Django, Python and PostgreSQL. It was originally developed for OpenDataPhilly.org, a portal that provides access to open data sets, applications, and APIs related to the Philadelphia region. The Open Data Catalog is a generalized version of the original source code with a simple skin. It is intended to display information and links to publicly available data in an easily searchable format. The code also includes options for data owners to submit data for consideration and for registered public users to nominate a type of data they would like to see openly available to the public.',
+        'identification_keywords': 'odc,Open Data Catalog,catalogue,discovery',
+        'identification_keywords_type': 'theme',
+        'identification_fees': 'None',
+        'identification_accessconstraints': 'None',
+        'provider_name': 'Open Data Catalog',
+        'provider_url': 'https://github.com/azavea/Open-Data-Catalog',
+        'contact_name': 'Lastname, Firstname',
+        'contact_position': 'Open Data Catalog Administrator',
+        'contact_address': 'TBA',
+        'contact_city': 'City',
+        'contact_stateorprovince': 'State',
+        'contact_postalcode': '12345',
+        'contact_country': 'United States of America',
+        'contact_phone': '+01-xxx-xxx-xxxx',
+        'contact_fax': '+01-xxx-xxx-xxxx',
+        'contact_email': 'you@youremail.com',
+        'contact_url': 'https://github.com/azavea/Open-Data-Catalog/',
+        'contact_hours': '0800h - 1600h EST',
+        'contact_instructions': 'During hours of service.  Off on weekends.',
+        'contact_role': 'pointOfContact',
+    },
+    'repository': {
+        'database': 'sqlite:////www/websites/www.kralidis.ca/htdocs/pycsw/trunk/data/cite/records.db',
+        #'source': 'odc',
+        #'mappings': 'settings.py',
+    },
+    'metadata:inspire': {
+        'enabled': 'true',
+        'languages_supported': 'eng',
+        'default_language': 'eng',
+        'date': '2012-06-11',
+        'gemet_keywords': 'Utility and governmental services',
+        'conformity_service': 'notEvaluated',
+        'contact_name': 'Open Data Catalog',
+        'contact_email': 'you@youremail.com',
+        'temp_extent': '2012-06-11/2012-06-11',
     }
 }
 

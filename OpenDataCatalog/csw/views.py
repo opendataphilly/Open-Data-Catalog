@@ -1,4 +1,5 @@
 import os.path
+from ConfigParser import SafeConfigParser
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -17,8 +18,14 @@ def global_dispatch(request):
     # if os.path.isabs(config) is False:
     #     config = os.path.join(app_root, config)
 
-    config = settings.CSW_CONFIG
-    
+    # serialize settings.CSW into SafeConfigParser
+    # object for interaction with pycsw
+    config = SafeConfigParser()
+    for section, options in settings.CSW.iteritems():
+        config.add_section(section)
+        for k, v in options.iteritems():
+            config.set(section, k, v)
+
     # if 'HTTP_HOST' in env and ':' in env['HTTP_HOST']:
     #     env['HTTP_HOST'] = env['HTTP_HOST'].split(':')[0]
 
