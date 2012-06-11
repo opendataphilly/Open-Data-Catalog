@@ -179,8 +179,6 @@ INSTALLED_APPS = (
     'suggestions',
     'contest',
     'csw',
-    'owslib',
-    
 )
 
 # pycsw configuration
@@ -200,11 +198,7 @@ CSW = {
 #        'gzip_compresslevel': '8',
 #        'domainquerytype': 'range',
 #        'domaincounts': 'true',
-        'profiles': 'apiso,dif,fgdc,atom',
-    },
-    'manager': {
-        'transactions': 'false',
-        'allowed_ips': '127.0.0.1',
+        'profiles': 'apiso,dif,fgdc,atom,ebrim',
     },
     'metadata:main': {
         'identification_title': 'Open Data Catalog CSW',
@@ -235,7 +229,7 @@ CSW = {
         'mappings': 'OpenDataCatalog/csw/mappings.py',
     },
     'metadata:inspire': {
-        'enabled': 'true',
+        'enabled': 'false',
         'languages_supported': 'eng',
         'default_language': 'eng',
         'date': '2012-06-11',
