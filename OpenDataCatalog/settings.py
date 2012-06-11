@@ -231,9 +231,8 @@ CSW = {
         'contact_role': 'pointOfContact',
     },
     'repository': {
-        'database': 'sqlite:////www/websites/www.kralidis.ca/htdocs/pycsw/trunk/data/cite/records.db',
-        #'source': 'odc',
-        #'mappings': 'settings.py',
+        'source': 'odc',
+        'mappings': 'OpenDataCatalog/csw/mappings.py',
     },
     'metadata:inspire': {
         'enabled': 'true',
