@@ -226,7 +226,7 @@ CSW = {
     },
     'repository': {
         'source': 'odc',
-        'mappings': 'OpenDataCatalog/csw/mappings.py',
+        'mappings': 'csw/mappings.py',
     },
     'metadata:inspire': {
         'enabled': 'false',
