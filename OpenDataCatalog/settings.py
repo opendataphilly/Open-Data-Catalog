@@ -207,7 +207,7 @@ CSW = {
         'identification_keywords_type': 'theme',
         'identification_fees': 'None',
         'identification_accessconstraints': 'None',
-        'provider_name': 'Open Data Catalog',
+        'provider_name': MANAGERS[0][0],
         'provider_url': 'https://github.com/azavea/Open-Data-Catalog',
         'contact_name': 'Lastname, Firstname',
         'contact_position': 'Open Data Catalog Administrator',
@@ -218,7 +218,7 @@ CSW = {
         'contact_country': 'United States of America',
         'contact_phone': '+01-xxx-xxx-xxxx',
         'contact_fax': '+01-xxx-xxx-xxxx',
-        'contact_email': 'you@youremail.com',
+        'contact_email': MANAGERS[0][1],
         'contact_url': 'https://github.com/azavea/Open-Data-Catalog/',
         'contact_hours': '0800h - 1600h EST',
         'contact_instructions': 'During hours of service.  Off on weekends.',
@@ -235,8 +235,8 @@ CSW = {
         'date': '2012-06-11',
         'gemet_keywords': 'Utility and governmental services',
         'conformity_service': 'notEvaluated',
-        'contact_name': 'Open Data Catalog',
-        'contact_email': 'you@youremail.com',
+        'contact_name': MANAGERS[0][0],
+        'contact_email': MANAGERS[0][1],
         'temp_extent': '2012-06-11/2012-06-11',
     }
 }
