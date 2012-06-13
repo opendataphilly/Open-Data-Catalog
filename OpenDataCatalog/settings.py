@@ -181,6 +181,10 @@ INSTALLED_APPS = (
     'csw',
 )
 
+# specific settings
+
+SITE_HOST = 'data.mysite.com'
+
 # pycsw configuration
 CSW = {
     'server': {

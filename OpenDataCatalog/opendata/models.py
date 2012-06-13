@@ -1,4 +1,7 @@
 import os
+from lxml import etree
+from shapely.wkt import loads
+
 from operator import attrgetter
 from django.db import models
 from django.db.models import Q 
@@ -138,7 +141,101 @@ class Resource(models.Model):
 
     def __unicode__(self):
         return '%s' % self.name
-    
+
+    # CSW specific properties
+
+    @property 
+    def csw_identifier(self):
+        fqrhn = '.'.join((reversed(settings.SITE_HOST.split('.'))))
+        return 'urn:x-odc:resource:%s::%d' % (fqrhn, self.id)
+
+    @property
+    def csw_schema(self):
+        return 'http://www.opengis.net/cat/csw/2.0.2'
+
+    @property
+    def csw_mdsource(self):
+        return 'local'
+
+    @property
+    def csw_type(self):
+        return self.data_types.values()[0]['data_type']
+
+    @property
+    def csw_links(self):
+        links = []
+        for url in self.url_set.all():
+            tmp = '%s,%s,%s,%s' % (url.url_label, url.url_type.url_type, 'WWW:DOWNLOAD-1.0-http--download', url.url)
+            links.append(tmp)
+        abs_url = 'http://%s%s' % (settings.SITE_HOST, self.get_absolute_url())
+        link = '%s,%s,%s,%s' % (self.name, self.name, 'WWW:LINK-1.0-http--link', abs_url)
+        links.append(link)
+        return '^'.join(links)
+
+    @property
+    def csw_keywords(self):
+        keywords = []
+        for keyword in self.tags.values():
+            keywords.append(keyword['tag_name'])
+        return ','.join(keywords)
+
+    @property
+    def csw_creator(self):
+        creator = User.objects.filter(username=self.created_by)[0]
+        return '%s %s' % (creator.first_name, creator.last_name)
+ 
+    # TODO this should be post save signal
+    @property
+    def csw_xml(self):
+
+        def nspath(ns, element):
+            return '{%s}%s' % (ns, element)
+
+        nsmap = {
+            'csw': 'http://www.opengis.net/cat/csw/2.0.2',
+            'dc' : 'http://purl.org/dc/elements/1.1/',
+            'dct': 'http://purl.org/dc/terms/',
+            'ows': 'http://www.opengis.net/ows',
+            'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+        }
+
+        record = etree.Element(nspath(nsmap['csw'], 'Record'), nsmap=nsmap)
+        etree.SubElement(record, nspath(nsmap['dc'], 'identifier')).text = self.csw_identifier
+        etree.SubElement(record, nspath(nsmap['dc'], 'title')).text = self.name
+        etree.SubElement(record, nspath(nsmap['dc'], 'type')).text = self.csw_type
+
+        for tag in self.tags.all():
+            etree.SubElement(record, nspath(nsmap['dc'], 'subject')).text = tag.tag_name
+  
+        etree.SubElement(record, nspath(nsmap['dc'], 'format')).text = str(self.data_formats)
+
+        for link in self.url_set.all():
+            etree.SubElement(record, nspath(nsmap['dct'], 'references'),
+                             scheme='WWW:DOWNLOAD-1.0-http--download').text = link.url
+
+
+        etree.SubElement(record, nspath(nsmap['dct'], 'modified')).text = str(self.last_updated)
+        etree.SubElement(record, nspath(nsmap['dct'], 'abstract')).text = self.description
+
+        etree.SubElement(record, nspath(nsmap['dc'], 'date')).text = str(self.created)
+        etree.SubElement(record, nspath(nsmap['dc'], 'creator')).text = str(self.csw_creator)
+
+        bbox = etree.SubElement(record, nspath(nsmap['ows'], 'BoundingBox'),
+               crs=self.coord_sys.all()[0].name, dimensions='2')
+
+        geom = loads(self.area_of_interest).envelope.bounds
+
+        etree.SubElement(bbox, nspath(nsmap['ows'], 'LowerCorner')).text = '%s %s' % (geom[1], geom[0])
+        etree.SubElement(bbox, nspath(nsmap['ows'], 'UpperCorner')).text = '%s %s' % (geom[3], geom[2])
+
+        return etree.tostring(record)
+
+    # TODO: this should be a post save signal
+    @property
+    def csw_anytext(self):
+        xml = etree.fromstring(self.csw_xml)
+        return ' '.join([value for value in xml.xpath('//text()')])
+
 class Url(models.Model):
     url = models.CharField(max_length=255)
     url_label = models.CharField(max_length=255)
