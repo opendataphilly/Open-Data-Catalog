@@ -3,8 +3,11 @@ from ConfigParser import SafeConfigParser
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from pycsw import server
 
+@csrf_exempt
 def global_dispatch(request):
     # config = 'default.cfg'
 
