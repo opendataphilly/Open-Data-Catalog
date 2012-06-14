@@ -160,7 +160,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-#    'django.contrib.sites',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -180,10 +180,6 @@ INSTALLED_APPS = (
     'contest',
     'csw',
 )
-
-# specific settings
-
-SITE_HOST = 'data.mysite.com'
 
 # pycsw configuration
 CSW = {
