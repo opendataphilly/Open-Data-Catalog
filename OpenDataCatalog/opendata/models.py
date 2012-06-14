@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Q 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
 
 from sorl.thumbnail.fields import ImageWithThumbnailsField
@@ -146,7 +147,8 @@ class Resource(models.Model):
 
     @property 
     def csw_identifier(self):
-        fqrhn = '.'.join((reversed(settings.SITE_HOST.split('.'))))
+        domain = Site.objects.get_current().domain
+        fqrhn = '.'.join((reversed(domain.split('.'))))
         return 'urn:x-odc:resource:%s::%d' % (fqrhn, self.id)
 
     @property
@@ -167,7 +169,8 @@ class Resource(models.Model):
         for url in self.url_set.all():
             tmp = '%s,%s,%s,%s' % (url.url_label, url.url_type.url_type, 'WWW:DOWNLOAD-1.0-http--download', url.url)
             links.append(tmp)
-        abs_url = 'http://%s%s' % (settings.SITE_HOST, self.get_absolute_url())
+        domain = Site.objects.get_current().domain
+        abs_url = 'http://%s%s' % (domain, self.get_absolute_url())
         link = '%s,%s,%s,%s' % (self.name, self.name, 'WWW:LINK-1.0-http--link', abs_url)
         links.append(link)
         return '^'.join(links)
