@@ -9,7 +9,6 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
-from django.db.models.signals import post_save
 
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 from djangoratings.fields import RatingField
@@ -233,6 +232,12 @@ class Resource(models.Model):
         xml = etree.fromstring(self.csw_xml)
         return ' '.join([value for value in xml.xpath('//text()')])
 
+    def save(self):
+        super(Resource, self).save()
+        self.csw_xml = self.gen_csw_xml()
+        self.csw_anytext = self.gen_csw_anytext()
+        super(Resource, self).save()
+
 class Url(models.Model):
     url = models.CharField(max_length=255)
     url_label = models.CharField(max_length=255)
@@ -322,10 +327,3 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
-
-def set_csw_xml_anytext(sender, instance, **kwargs):
-    Resource.objects.filter(id=instance.id).update(csw_xml=instance.gen_csw_xml())
-    Resource.objects.filter(id=instance.id).update(csw_anytext=instance.gen_csw_anytext())
-
-# post save signals
-post_save.connect(set_csw_xml_anytext, sender=Resource)
