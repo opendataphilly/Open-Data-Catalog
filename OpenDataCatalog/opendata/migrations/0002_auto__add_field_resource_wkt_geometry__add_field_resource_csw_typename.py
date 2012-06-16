@@ -28,6 +28,16 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(default='local', max_length=100),
                       keep_default=False)
 
+        # Adding field 'Resource.csw_xml'
+        db.add_column('opendata_resource', 'csw_xml',
+                      self.gf('django.db.models.fields.TextField')(default='', blank=True),
+                      keep_default=False)
+
+        # Adding field 'Resource.csw_anytext'
+        db.add_column('opendata_resource', 'csw_anytext',
+                      self.gf('django.db.models.fields.TextField')(default='', blank=True),
+                      keep_default=False)
+
 
     def backwards(self, orm):
         # Deleting field 'Resource.wkt_geometry'
@@ -41,6 +51,12 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Resource.csw_mdsource'
         db.delete_column('opendata_resource', 'csw_mdsource')
+
+        # Deleting field 'Resource.csw_xml'
+        db.delete_column('opendata_resource', 'csw_xml')
+
+        # Deleting field 'Resource.csw_anytext'
+        db.delete_column('opendata_resource', 'csw_anytext')
 
 
     models = {
@@ -130,9 +146,11 @@ class Migration(SchemaMigration):
             'coord_sys': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['opendata.CoordSystem']", 'null': 'True', 'blank': 'True'}),
             'created': ('django.db.models.fields.DateTimeField', [], {}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'created_by'", 'to': "orm['auth.User']"}),
+            'csw_anytext': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'csw_mdsource': ('django.db.models.fields.CharField', [], {'default': "'local'", 'max_length': '100'}),
             'csw_schema': ('django.db.models.fields.CharField', [], {'default': "'http://www.opengis.net/cat/csw/2.0.2'", 'max_length': '200'}),
             'csw_typename': ('django.db.models.fields.CharField', [], {'default': "'csw:Record'", 'max_length': '200'}),
+            'csw_xml': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'data_formats': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'data_types': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['opendata.DataType']", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),

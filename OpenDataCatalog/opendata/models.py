@@ -114,6 +114,8 @@ class Resource(models.Model):
     csw_typename = models.CharField(max_length=200,default="csw:Record")
     csw_schema = models.CharField(max_length=200,default="http://www.opengis.net/cat/csw/2.0.2")
     csw_mdsource = models.CharField(max_length=100,default="local") 
+    csw_xml = models.TextField(blank=True)
+    csw_anytext = models.TextField(blank=True)
     
     def get_distinct_url_types(self):
         types = []
@@ -183,9 +185,7 @@ class Resource(models.Model):
         creator = User.objects.filter(username=self.created_by)[0]
         return '%s %s' % (creator.first_name, creator.last_name)
  
-    # TODO this should be post save signal
-    @property
-    def csw_xml(self):
+    def gen_csw_xml(self):
 
         def nspath(ns, element):
             return '{%s}%s' % (ns, element)
@@ -229,9 +229,7 @@ class Resource(models.Model):
 
         return etree.tostring(record)
 
-    # TODO: this should be a post save signal
-    @property
-    def csw_anytext(self):
+    def gen_csw_anytext(self):
         xml = etree.fromstring(self.csw_xml)
         return ' '.join([value for value in xml.xpath('//text()')])
 
@@ -324,3 +322,10 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
+
+def set_csw_xml_anytext(sender, instance, **kwargs):
+    Resource.objects.filter(id=instance.id).update(csw_xml=instance.gen_csw_xml())
+    Resource.objects.filter(id=instance.id).update(csw_anytext=instance.gen_csw_anytext())
+
+# post save signals
+post_save.connect(set_csw_xml_anytext, sender=Resource)
