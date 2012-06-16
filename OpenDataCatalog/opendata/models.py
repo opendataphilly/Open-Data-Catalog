@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
+from django.db.models.signals import post_save
 
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 from djangoratings.fields import RatingField
@@ -85,8 +86,6 @@ class Resource(models.Model):
     data_types = models.ManyToManyField(DataType, blank=True, null=True)
         
     # More Info
-    bbox = models.TextField()
-    atype = models.CharField(max_length=200,default="csw:Record")
     description = models.TextField()
     contact_phone = models.CharField(max_length=50, blank=True)
     contact_email = models.CharField(max_length=255, blank=True)
@@ -109,7 +108,12 @@ class Resource(models.Model):
     update_frequency = models.CharField(max_length=255, blank=True)
     data_formats = models.CharField(max_length=255, blank=True)
     proj_coord_sys = models.CharField(max_length=255, blank=True, verbose_name="Coordinate system")
-    
+
+    # CSW specific properties 
+    wkt_geometry = models.TextField(blank=True)
+    csw_typename = models.CharField(max_length=200,default="csw:Record")
+    csw_schema = models.CharField(max_length=200,default="http://www.opengis.net/cat/csw/2.0.2")
+    csw_mdsource = models.CharField(max_length=100,default="local") 
     
     def get_distinct_url_types(self):
         types = []
@@ -150,14 +154,6 @@ class Resource(models.Model):
         domain = Site.objects.get_current().domain
         fqrhn = '.'.join((reversed(domain.split('.'))))
         return 'urn:x-odc:resource:%s::%d' % (fqrhn, self.id)
-
-    @property
-    def csw_schema(self):
-        return 'http://www.opengis.net/cat/csw/2.0.2'
-
-    @property
-    def csw_mdsource(self):
-        return 'local'
 
     @property
     def csw_type(self):
@@ -226,7 +222,7 @@ class Resource(models.Model):
         bbox = etree.SubElement(record, nspath(nsmap['ows'], 'BoundingBox'),
                crs=self.coord_sys.all()[0].name, dimensions='2')
 
-        geom = loads(self.area_of_interest).envelope.bounds
+        geom = loads(self.wkt_geometry).envelope.bounds
 
         etree.SubElement(bbox, nspath(nsmap['ows'], 'LowerCorner')).text = '%s %s' % (geom[1], geom[0])
         etree.SubElement(bbox, nspath(nsmap['ows'], 'UpperCorner')).text = '%s %s' % (geom[3], geom[2])
@@ -328,5 +324,3 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
-
-
