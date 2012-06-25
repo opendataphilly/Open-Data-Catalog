@@ -19,4 +19,5 @@ wsgiref==0.1.2
 pyproj
 lxml
 shapely
--e svn+https://pycsw.svn.sourceforge.net/svnroot/pycsw/trunk/#egg=pycsw
+-e git+git@github.com:geopython/OWSLib.git#egg=OWSLib
+-e git+git@github.com:geopython/pycsw.git#egg=pycsw
