@@ -75,8 +75,8 @@ class Resource(models.Model):
         return objs
 
     def save(self, *args, **kwargs):
-        self.csw_xml = obj.gen_csw_xml()
-        self.csw_anytext = obj.gen_csw_anytext()
+        self.csw_xml = self.gen_csw_xml()
+        self.csw_anytext = self.gen_csw_anytext()
         super(Resource, self).save(*args, **kwargs)
 
     # Basic Info
