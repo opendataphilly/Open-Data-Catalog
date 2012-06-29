@@ -132,7 +132,7 @@ def suggest_content(request):
                 "area_of_interest": request.POST.get("area_of_interest"),
                 "update_frequency": updates,
                 "coord_system": coords,
-                "wkt_geometry": requet.POST.get("wkt_geometry"),
+                "wkt_geometry": request.POST.get("wkt_geometry"),
                 "types": types,
                 "formats": formats,
                 "usage_limitations": request.POST.get("usage_limitations"),
