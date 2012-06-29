@@ -361,20 +361,3 @@ def gen_website_url():
     if settings.SITEPORT == 80:
         port = ''
     return '%s://%s%s' % (scheme, settings.SITEHOST, port)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return settings.SITEHOST
