@@ -74,6 +74,11 @@ class Resource(models.Model):
 
         return objs
 
+    def save(self, *args, **kwargs):
+        self.csw_xml = obj.gen_csw_xml()
+        self.csw_anytext = obj.gen_csw_anytext()
+        super(Resource, self).save(*args, **kwargs)
+
     # Basic Info
     name = models.CharField(max_length=255)
     short_description = models.CharField(max_length=255)    
@@ -111,9 +116,6 @@ class Resource(models.Model):
 
     # CSW specific properties 
     wkt_geometry = models.TextField(blank=True)
-    csw_typename = models.CharField(max_length=200,default="csw:Record")
-    csw_schema = models.CharField(max_length=200,default="http://www.opengis.net/cat/csw/2.0.2")
-    csw_mdsource = models.CharField(max_length=100,default="local") 
     csw_xml = models.TextField(blank=True)
     csw_anytext = models.TextField(blank=True)
     
@@ -150,6 +152,17 @@ class Resource(models.Model):
         return '%s' % self.name
 
     # CSW specific properties
+    @property
+    def csw_typename(self):
+        return "csw:Record"
+
+    @property
+    def csw_schema(self):
+        return "http://www.opengis.net/cat/csw/2.0.2"
+
+    @property
+    def csw_mdsource(self):
+        return "local"
 
     @property 
     def csw_identifier(self):
@@ -337,13 +350,3 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
-
-def set_csw(sender, **kwargs):
-    post_save.disconnect(set_csw, sender=Resource)
-    obj = kwargs['instance']
-    obj.csw_xml = obj.gen_csw_xml()
-    obj.csw_anytext = obj.gen_csw_anytext()
-    obj.save()
-    post_save.connect(set_csw, sender=Resource)
-
-post_save.connect(set_csw, sender=Resource)
