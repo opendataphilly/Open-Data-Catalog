@@ -75,6 +75,8 @@ class Resource(models.Model):
         return objs
 
     def save(self, *args, **kwargs):
+        super(Resource, self).save(*args, **kwargs)
+        super(Resource, self).save(*args, **kwargs)
         self.csw_xml = self.gen_csw_xml()
         self.csw_anytext = self.gen_csw_anytext()
         super(Resource, self).save(*args, **kwargs)
@@ -223,6 +225,10 @@ class Resource(models.Model):
             etree.SubElement(record, nspath(nsmap['dc'], 'subject')).text = tag.tag_name
   
         etree.SubElement(record, nspath(nsmap['dc'], 'format')).text = str(self.data_formats)
+
+        domain = Site.objects.get_current().domain
+        abs_url = 'http://%s%s' % (domain, self.get_absolute_url())
+        etree.SubElement(record, nspath(nsmap['dct'], 'references'), scheme='WWW:LINK-1.0-http--link').text = abs_url
 
         for link in self.url_set.all():
             etree.SubElement(record, nspath(nsmap['dct'], 'references'),
