@@ -7,7 +7,6 @@ from django.db import models
 from django.db.models import Q 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
 
@@ -160,8 +159,9 @@ class Resource(models.Model):
     # CSW specific properties
     @property 
     def csw_identifier(self):
-        domain = Site.objects.get_current().domain
-        fqrhn = '.'.join((reversed(domain.split('.'))))
+        if not settings.SITEHOST:
+            raise RuntimeError('settings.SITEHOST is not set')
+        fqrhn = '.'.join((reversed(settings.SITEHOST.split('.'))))
         return 'urn:x-odc:resource:%s::%d' % (fqrhn, self.id)
 
     @property
@@ -184,8 +184,7 @@ class Resource(models.Model):
         for url in self.url_set.all():
             tmp = '%s,%s,%s,%s' % (url.url_label, url.url_type.url_type, 'WWW:DOWNLOAD-1.0-http--download', url.url)
             links.append(tmp)
-        domain = Site.objects.get_current().domain
-        abs_url = 'http://%s%s' % (domain, self.get_absolute_url())
+        abs_url = '%s%s' % (gen_website_url(), self.get_absolute_url())
         link = '%s,%s,%s,%s' % (self.name, self.name, 'WWW:LINK-1.0-http--link', abs_url)
         links.append(link)
         return '^'.join(links)
@@ -227,8 +226,7 @@ class Resource(models.Model):
   
         etree.SubElement(record, nspath(nsmap['dc'], 'format')).text = str(self.data_formats)
 
-        domain = Site.objects.get_current().domain
-        abs_url = 'http://%s%s' % (domain, self.get_absolute_url())
+        abs_url = '%s%s' % (gen_website_url(), self.get_absolute_url())
         etree.SubElement(record, nspath(nsmap['dct'], 'references'), scheme='WWW:LINK-1.0-http--link').text = abs_url
 
         for link in self.url_set.all():
@@ -348,3 +346,35 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
+
+def gen_website_url():
+    if not settings.SITEHOST:
+        raise RuntimeError('settings.SITEHOST is not set')
+    if not settings.SITEPORT:
+        raise RuntimeError('settings.SITEPORT is not set')
+
+    scheme = 'http'
+    port = ':%d' % settings.SITEPORT
+
+    if settings.SITEPORT == 443:
+        scheme = 'https'
+    if settings.SITEPORT == 80:
+        port = ''
+    return '%s://%s%s' % (scheme, settings.SITEHOST, port)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return settings.SITEHOST
