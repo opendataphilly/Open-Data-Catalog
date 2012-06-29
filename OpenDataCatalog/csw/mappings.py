@@ -21,7 +21,7 @@ MD_CORE_MODEL = {
         'pycsw:Modified': 'last_updated',
         'pycsw:Type': 'csw_type',
         'pycsw:BoundingBox': 'wkt_geometry',
-        'pycsw:CRS': 'proj_coord_sys',
+        'pycsw:CRS': 'csw_crs',
         'pycsw:AlternateTitle': 'title_alternate',
         'pycsw:RevisionDate': 'date_revision',
         'pycsw:CreationDate': 'created_by',
