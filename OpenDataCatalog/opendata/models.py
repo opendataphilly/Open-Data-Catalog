@@ -75,8 +75,9 @@ class Resource(models.Model):
         return objs
 
     def save(self, *args, **kwargs):
-        super(Resource, self).save(*args, **kwargs)
-        super(Resource, self).save(*args, **kwargs)
+        if not self.pk:
+            super(Resource, self).save(*args, **kwargs)
+
         self.csw_xml = self.gen_csw_xml()
         self.csw_anytext = self.gen_csw_anytext()
         super(Resource, self).save(*args, **kwargs)
