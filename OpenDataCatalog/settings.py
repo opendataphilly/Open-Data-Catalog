@@ -185,7 +185,6 @@ INSTALLED_APPS = (
 CSW = {
     'server': {
         'home': '.',
-        'url': 'http://localhost:8000/csw/',
         'mimetype': 'application/xml; charset=UTF-8',
         'encoding': 'UTF-8',
         'language': 'en-US',
