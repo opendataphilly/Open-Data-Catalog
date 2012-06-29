@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
+from django.db.models.signals import post_save
 
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 from djangoratings.fields import RatingField
@@ -158,7 +159,17 @@ class Resource(models.Model):
 
     @property
     def csw_type(self):
-        return self.data_types.values()[0]['data_type']
+        data_types = self.data_types.values()
+        if len(data_types) > 0:
+            return data_types[0]['data_type']
+        return None
+
+    @property
+    def csw_crs(self):
+        crs = self.coord_sys.values()
+        if len(crs) > 0:
+            return crs[0]['name']
+        return None
 
     @property
     def csw_links(self):
@@ -200,7 +211,9 @@ class Resource(models.Model):
         record = etree.Element(nspath(nsmap['csw'], 'Record'), nsmap=nsmap)
         etree.SubElement(record, nspath(nsmap['dc'], 'identifier')).text = self.csw_identifier
         etree.SubElement(record, nspath(nsmap['dc'], 'title')).text = self.name
-        etree.SubElement(record, nspath(nsmap['dc'], 'type')).text = self.csw_type
+
+        if self.csw_type is not None:
+            etree.SubElement(record, nspath(nsmap['dc'], 'type')).text = self.csw_type
 
         for tag in self.tags.all():
             etree.SubElement(record, nspath(nsmap['dc'], 'subject')).text = tag.tag_name
@@ -211,32 +224,29 @@ class Resource(models.Model):
             etree.SubElement(record, nspath(nsmap['dct'], 'references'),
                              scheme='WWW:DOWNLOAD-1.0-http--download').text = link.url
 
-
         etree.SubElement(record, nspath(nsmap['dct'], 'modified')).text = str(self.last_updated)
         etree.SubElement(record, nspath(nsmap['dct'], 'abstract')).text = self.description
 
         etree.SubElement(record, nspath(nsmap['dc'], 'date')).text = str(self.created)
         etree.SubElement(record, nspath(nsmap['dc'], 'creator')).text = str(self.csw_creator)
 
-        bbox = etree.SubElement(record, nspath(nsmap['ows'], 'BoundingBox'),
-               crs=self.coord_sys.all()[0].name, dimensions='2')
+        geom = loads(self.wkt_geometry)
+        bounds = geom.envelope.bounds
+        dimensions = str(geom.envelope._ndim)
 
-        geom = loads(self.wkt_geometry).envelope.bounds
+        bbox = etree.SubElement(record, nspath(nsmap['ows'], 'BoundingBox'), dimensions=dimensions)
 
-        etree.SubElement(bbox, nspath(nsmap['ows'], 'LowerCorner')).text = '%s %s' % (geom[1], geom[0])
-        etree.SubElement(bbox, nspath(nsmap['ows'], 'UpperCorner')).text = '%s %s' % (geom[3], geom[2])
+        if self.csw_crs is not None:
+            bbox.attrib['crs'] = self.csw_crs
+
+        etree.SubElement(bbox, nspath(nsmap['ows'], 'LowerCorner')).text = '%s %s' % (bounds[1], bounds[0])
+        etree.SubElement(bbox, nspath(nsmap['ows'], 'UpperCorner')).text = '%s %s' % (bounds[3], bounds[2])
 
         return etree.tostring(record)
 
     def gen_csw_anytext(self):
         xml = etree.fromstring(self.csw_xml)
-        return ' '.join([value for value in xml.xpath('//text()')])
-
-    def save(self):
-        super(Resource, self).save()
-        self.csw_xml = self.gen_csw_xml()
-        self.csw_anytext = self.gen_csw_anytext()
-        super(Resource, self).save()
+        return ' '.join([value.strip() for value in xml.xpath('//text()')])
 
 class Url(models.Model):
     url = models.CharField(max_length=255)
@@ -327,3 +337,13 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
+
+def set_csw(sender, **kwargs):
+    post_save.disconnect(set_csw, sender=Resource)
+    obj = kwargs['instance']
+    obj.csw_xml = obj.gen_csw_xml()
+    obj.csw_anytext = obj.gen_csw_anytext()
+    obj.save()
+    post_save.connect(set_csw, sender=Resource)
+
+post_save.connect(set_csw, sender=Resource)
