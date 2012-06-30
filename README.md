@@ -67,7 +67,7 @@ Update the database settings in settings.py. You'll probably have to update "nam
            }
         }
 
-Open Data Catalog supports the [OGC Catalogue Service] specification (CSW) using [pycsw](http://pycsw.org).  CSW settings can be set/modified in `settings.CSW`.  As well, `settings.SITEHOST` and `settings.SITEPORT` must be set accordingly for your deployment environment.
+Open Data Catalog supports the [OGC Catalogue Service] (http://www.opengeospatial.org/standards/specifications/catalog) specification (CSW) using [pycsw](http://pycsw.org).  CSW settings can be set/modified in `settings.CSW`.  As well, `settings.SITEHOST` and `settings.SITEPORT` must be set accordingly for your deployment environment.
 
 ### Creating the database scheme
 
