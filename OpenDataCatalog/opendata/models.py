@@ -223,7 +223,7 @@ class Resource(models.Model):
 
         for tag in self.tags.all():
             etree.SubElement(record, nspath(nsmap['dc'], 'subject')).text = tag.tag_name
-  
+
         etree.SubElement(record, nspath(nsmap['dc'], 'format')).text = str(self.data_formats)
 
         abs_url = '%s%s' % (gen_website_url(), self.get_absolute_url())
@@ -238,6 +238,8 @@ class Resource(models.Model):
 
         etree.SubElement(record, nspath(nsmap['dc'], 'date')).text = str(self.created)
         etree.SubElement(record, nspath(nsmap['dc'], 'creator')).text = str(self.csw_creator)
+
+        etree.SubElement(record, nspath(nsmap['dc'], 'coverage')).text = self.area_of_interest
 
         geom = loads(self.wkt_geometry)
         bounds = geom.envelope.bounds
