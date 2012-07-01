@@ -24,7 +24,7 @@ MD_CORE_MODEL = {
         'pycsw:CRS': 'csw_crs',
         'pycsw:AlternateTitle': 'title_alternate',
         'pycsw:RevisionDate': 'date_revision',
-        'pycsw:CreationDate': 'created_by',
+        'pycsw:CreationDate': 'created',
         'pycsw:PublicationDate': 'date_publication',
         'pycsw:OrganizationName': 'organization',
         'pycsw:SecurityConstraints': 'securityconstraints',
