@@ -115,7 +115,7 @@ Django can run via mod_wsgi on Apache as well. Add the following to a new Apache
         import django.conf
         import django.utils
 
-        django.utils.translation.activate(jangod.conf.settings.LANGUAGE_CODE)
+        django.utils.translation.activate(django.conf.settings.LANGUAGE_CODE)
 
         import django.core.handlers.wsgi
 
