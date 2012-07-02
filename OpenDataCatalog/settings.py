@@ -181,6 +181,11 @@ INSTALLED_APPS = (
     'csw',
 )
 
+# the hostname of the deployment
+SITEHOST = None
+# the port which the deployment runs on
+SITEPORT = None
+
 # pycsw configuration
 CSW = {
     'server': {

@@ -38,7 +38,11 @@
 	{% endif %}
 	<div id="results_header">
 		<div id="results_info">
+		    {% if results.count == 1 %}
+			<h2 id="count">{{results.count}} RESULT</h2>
+		    {% else %}
 			<h2 id="count">{{results.count}} RESULTS</h2>
+		    {% endif %}
 			<div id="filter">
 				<ul>
 					<li id="filter_application"><a href="javascript:void()" onClick="odp.getFiltered('application');return false;" class="url_image" ></a></li>

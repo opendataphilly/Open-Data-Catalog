@@ -67,6 +67,8 @@ Update the database settings in settings.py. You'll probably have to update "nam
            }
         }
 
+Open Data Catalog supports the [OGC Catalogue Service] (http://www.opengeospatial.org/standards/specifications/catalog) specification (CSW) using [pycsw](http://pycsw.org).  CSW settings can be set/modified in `settings.CSW`.  As well, `settings.SITEHOST` and `settings.SITEPORT` must be set accordingly for your deployment environment.
+
 ### Creating the database scheme
 
 To create the scheme we use django "syncdb" command
@@ -113,7 +115,7 @@ Django can run via mod_wsgi on Apache as well. Add the following to a new Apache
         import django.conf
         import django.utils
 
-        django.utils.translation.activate(jangod.conf.settings.LANGUAGE_CODE)
+        django.utils.translation.activate(django.conf.settings.LANGUAGE_CODE)
 
         import django.core.handlers.wsgi
 
