@@ -54,7 +54,10 @@ You can verify the connection with:
         psql opendata odc-user -h localhost
 
 ### Update settings
-Update the database settings in settings.py. You'll probably have to update "name", "user", "password", and "host". It should look similar to:
+
+Copy local_settings.py.example to local_settings.py
+
+Update the database settings in local_settings.py. You'll probably have to update "name", "user", "password", and "host". It should look similar to:
 
         DATABASES = {
            'default': {
@@ -78,6 +81,23 @@ To create the scheme we use django "syncdb" command
 We installed gunicorn as part of the installation process. All you need to do now is start it:
 
         gunicorn_django
+
+
+# Customizing your installation
+
+## Settings
+
+You should read OpenDataCatalog/local_settings.py for a list of configurable
+values, such as TWITTER_USER and SITE_ROOT.  Feel free to play with these
+settings as much as you want.
+
+## Style
+
+In local_settings.py you should specify a LOCAL_TEMPLATE_DIR that is the full
+path to your template location.  As you want to change the style, you copy
+files out of OpenDataCatalog/templates and into your local overly directory
+and make the changes there.  That way you can keep your repository in sync
+with the upstream more easily while still maintaining your own style.
 
 # Deploy to Heroku
 
