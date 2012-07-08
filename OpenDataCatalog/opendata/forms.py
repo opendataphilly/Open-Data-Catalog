@@ -1,5 +1,5 @@
 from django import forms
-from models import UpdateFrequency, CoordSystem, UrlType, DataType
+from models import UpdateFrequency, CoordSystem, UrlType, DataType, Resource
 
 class SubmissionForm(forms.Form):
     dataset_name = forms.CharField(max_length=255, label="Data set, API or App name")
@@ -26,3 +26,13 @@ class SubmissionForm(forms.Form):
     certified = forms.BooleanField(required=False, label="", help_text="I am the copyright holder or have permission to release this data")
     terms = forms.BooleanField(label="", help_text="I have read and agree with the site's <a href='/terms/' target='_blank'>terms of use</a>")
     
+
+class ResourceForm(forms.ModelForm):
+    bucket = forms.CharField(max_length=80, widget=forms.HiddenInput)
+    key = forms.CharField(max_length=255, widget=forms.HiddenInput)
+    url = forms.CharField(max_length=255)
+
+    class Meta:
+        model = Resource
+        fields = ('name', 'is_published', 'description', 'short_description',
+                  'usage')
