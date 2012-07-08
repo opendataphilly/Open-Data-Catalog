@@ -1,0 +1,22 @@
+{% extends "template1.html" %}
+{% block title %} - Upload Data{% endblock %}
+
+{% block center_container %}
+  <div id="form_container" class="upload_form">
+    <form id="upload_from" action="https://{{ form.bucket_name }}.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="key" value="{{ form.upload_name }}">
+      <input type="hidden" name="AWSAccessKeyId" value="{{ form.access_key }}"> 
+      <input type="hidden" name="acl" value="{{ form.acl }}"> 
+      <input type="hidden" name="success_action_redirect" value="{{ form.redirect_to }}">
+      <input type="hidden" name="policy" value="{{ form.policy }}">
+      <input type="hidden" name="signature" value="{{ form.signature }}">
+      <!-- input type="hidden" name="Content-Type" value="image/jpeg" -->
+      <!-- Include any additional input fields here -->
+
+      File to upload to S3: 
+      <input name="file" type="file"> 
+      <br> 
+      <input type="submit" value="Upload File to S3"> 
+    </form>
+  </div>
+{% endblock %}

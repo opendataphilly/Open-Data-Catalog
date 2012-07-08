@@ -1,0 +1,16 @@
+{% extends "template1.html" %}
+{% block title %} - Create Resource from Upload{% endblock %}
+
+{% block center_container %}
+  <div id="form_container" class="resource_form">
+
+    <h1>{{ url }} Uploaded</h1>
+    <h2>Now fill out this form to make a listing for this data</h2>
+
+    <form id="resource_from" action="{{ SITE_ROOT }}/warehouse/finalize/" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Create Catalog Page">
+    </form>
+  </div>
+{% endblock %}

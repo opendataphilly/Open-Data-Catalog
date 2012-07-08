@@ -84,4 +84,7 @@ urlpatterns = patterns('',
         {'document_root': settings.STATIC_DATA}),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
+
+    # Comment this out if you don't want to warehouse data
+    (r'^warehouse/', include('warehouse.urls')),
 )
