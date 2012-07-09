@@ -1,0 +1,33 @@
+WSGIPythonHome {{PATH}}
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /var/www
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	Alias /media/ {{PATH}}/OpenDataCatalog/media/
+	Alias /static/ {{PATH}}/OpenDataCatalog/opendata/static/
+
+	<Directory {{PATH}}/OpenDataCatalog/media>
+		Order deny,allow
+		Allow from all
+	</Directory>
+
+	<Directory {{PATH}}/OpenDataCatalog/static>
+		Order deny,allow
+		Allow from all
+	</Directory>
+
+	WSGIScriptAlias / {{PATH}}/OpenDataCatalog/django.wsgi
+</VirtualHost>
