@@ -17,7 +17,7 @@ from fabric import api as fab
 #               'catalog' for both a unix user and a postgres user is
 #               recommended, as the sample config supports it.
 DB_USER='catalog'
-GIT_REPO='https://github.com/openlexington/Open-Data-Catalog.git'
+GIT_REPO='https://github.com/azavea/Open-Data-Catalog.git'
 OVERLAY_REPO='https://github.com/openlexington/ODC-overlay.git'
 
 
