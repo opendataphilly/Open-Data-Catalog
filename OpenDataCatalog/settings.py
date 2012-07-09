@@ -153,6 +153,7 @@ INSTALLED_APPS = (
     'comments',
     'suggestions',
     'contest',
+    'warehouse',
     
 )
 
