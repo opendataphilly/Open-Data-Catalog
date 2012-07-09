@@ -1,10 +1,6 @@
 import os
 # Django settings for opendata project.
 
-SITE_ROOT = ""
-RECAPTCHA_PUBLIC_KEY = ""
-RECAPTCHA_PRIVATE_KEY = ""
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -82,14 +78,6 @@ STATIC_DATA = os.path.join(os.path.dirname(__file__), 'static/')
 #ADMIN_MEDIA_PREFIX = '/hidden/static/admin_media/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    "/projects/OpenDataCatalog/opendata/static",
-)
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
@@ -98,18 +86,12 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'insecure'
-
 ### Package settings
 ACCOUNT_ACTIVATION_DAYS = 7
-TWITTER_USER = None
 TWITTER_TIMEOUT = 6000
 THUMBNAIL_EXTENSION = 'png'
 PAGINATION_DEFAULT_WINDOW = 2
 ###
-
-LOGIN_URL = SITE_ROOT + "/accounts/login/"
 
 COMMENTS_APP = 'comments'
 
@@ -147,13 +129,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'urls'
-
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), 'templates')
-)
 
 
 INSTALLED_APPS = (
@@ -212,3 +187,23 @@ try:
     from local_settings import *
 except Exception:
     pass
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    LOCAL_STATICFILE_DIR,
+    os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                 'opendata/static')),
+)
+
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    LOCAL_TEMPLATE_DIR,
+    os.path.join(os.path.dirname(__file__), 'templates')
+)
+
+LOGIN_URL = SITE_ROOT + "/accounts/login/"
