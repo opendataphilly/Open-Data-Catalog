@@ -16,3 +16,8 @@ simplejson==2.5.0
 sorl-thumbnail==3.2.5
 twitter==1.7.2
 wsgiref==0.1.2
+pyproj==1.8.9
+lxml==2.2.8
+shapely==1.2.15
+-e git+git://github.com/geopython/OWSLib.git#egg=OWSLib
+-e git+git://github.com/geopython/pycsw.git#egg=pycsw

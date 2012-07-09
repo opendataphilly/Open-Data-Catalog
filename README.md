@@ -6,7 +6,7 @@
 # Installing the Open Data Catalog
 ## Non-Python Dependencies
 
-        sudo apt-get install sendmail postgresql python python-pip libpq-dev python-dev
+        sudo apt-get install sendmail postgresql python python-pip libpq-dev python-dev libxml2-dev libxslt1-dev libgeos-c1
 
 ## Python Dependencies
 
@@ -69,6 +69,8 @@ Update the database settings in local_settings.py. You'll probably have to updat
                'PORT': '',
            }
         }
+
+Open Data Catalog supports the [OGC Catalogue Service] (http://www.opengeospatial.org/standards/specifications/catalog) specification (CSW) using [pycsw](http://pycsw.org).  CSW settings can be set/modified in `settings.CSW`.  As well, `settings.SITEHOST` and `settings.SITEPORT` must be set accordingly for your deployment environment.
 
 ### Creating the database scheme
 
@@ -133,7 +135,7 @@ Django can run via mod_wsgi on Apache as well. Add the following to a new Apache
         import django.conf
         import django.utils
 
-        django.utils.translation.activate(jangod.conf.settings.LANGUAGE_CODE)
+        django.utils.translation.activate(django.conf.settings.LANGUAGE_CODE)
 
         import django.core.handlers.wsgi
 

@@ -14,6 +14,7 @@ class SubmissionForm(forms.Form):
     
     update_frequency = forms.ModelChoiceField(required=False, queryset=UpdateFrequency.objects.all())
     coord_system = forms.ModelMultipleChoiceField(required=False, queryset=CoordSystem.objects.all(), label="Coordinate system")
+    wkt_geometry = forms.CharField(widget=forms.Textarea, label="Well known Text (WKT) geometry of the dataset")
     types = forms.ModelMultipleChoiceField(required=False, queryset=UrlType.objects.all(), label="Data types")
     formats = forms.ModelMultipleChoiceField(required=False, queryset=DataType.objects.all(), label="Data formats")
     

@@ -27,7 +27,8 @@ class ResourceAdmin(admin.ModelAdmin):
             'updates',
             ('data_formats', 'area_of_interest'), 'proj_coord_sys', 
             ('created_by', 'created'), ('last_updated_by', 'last_updated'),
-            'metadata_contact','metadata_notes', 'data_types', 'coord_sys', 'tags', ], 'classes':['wide']})
+            ('coord_sys', 'wkt_geometry'),
+            'metadata_contact','metadata_notes', 'data_types', 'tags', ], 'classes':['wide']})
     ]
     readonly_fields = ['created_by', 'created', 'last_updated_by', 'last_updated']
     inlines = [UrlInline,]
@@ -42,7 +43,7 @@ class ResourceAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.created_by = request.user
-            obj.created = datetime.now()
+            obj.created = datetime.datetime.now()
         
         obj.last_updated_by = request.user
         obj.save()
@@ -76,7 +77,7 @@ class IdeaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if not change:
             obj.created_by = request.user
-            obj.created_by_date = datetime.now()
+            obj.created_by_date = datetime.datetime.now()
         
         obj.updated_by = request.user
         obj.save()
