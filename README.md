@@ -43,6 +43,8 @@ Grab the python dependencies and do some final setup:
         sudo su postgres # Become the postgres user
         createuser -P odc-user
         psql template1 -c "CREATE DATABASE opendata OWNER \"odc-user\";"
+        createlang plpythonu opendata
+        psql -d opendata -f etc/pycsw_plpythonu.sql
         exit # Exit out of the postgres user's shell
 
 Note that running the unit tests requires that your postgres user be a super user (since it drops/creates databases). To create a user as a superuser simply do:
