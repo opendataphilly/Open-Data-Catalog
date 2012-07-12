@@ -71,11 +71,15 @@ def create_postgres_table():
              '"CREATE DATABASE catalog OWNER \\\\"%s\\\\";"' % (DB_USER,),
              user='postgres')
 
+def create_postgres_pycsw_plpythonu():
+    fab.sudo('createlang plpythonu catalog', user='postgres')
+    fab.sudo('psql -d catalog -f etc/pycsw_plpythonu.sql', user='postgres')
+
 
 def postgres():
     create_postgres_user()
     create_postgres_table()
-
+    create_postgres_pycsw_plpythonu()
 
 def local_settings():
     with fab.cd('opendatacatalog/Open-Data-Catalog/OpenDataCatalog'):
