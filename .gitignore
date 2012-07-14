@@ -1,6 +1,7 @@
 *.pyc
 *.db
 *.csv
+admin_media
 media/*
 static/*
 static/*
