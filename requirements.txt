@@ -19,5 +19,5 @@ wsgiref==0.1.2
 pyproj==1.8.9
 lxml==2.2.8
 shapely==1.2.15
--e git+git://github.com/geopython/OWSLib.git#egg=OWSLib
--e git+git://github.com/geopython/pycsw.git#egg=pycsw
+OWSLib==0.5.1
+pycsw
