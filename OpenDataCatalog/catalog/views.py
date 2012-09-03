@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from pycsw import server
 
 @csrf_exempt
-def global_dispatch(request):
+def csw(request):
 
     app_root = os.path.dirname(__file__)    
 
@@ -26,7 +26,7 @@ def global_dispatch(request):
 
 
     # update server.url
-    server_url = '%s://%s/csw/' %(scheme, request.META['HTTP_HOST'])
+    server_url = '%s://%s/catalog/csw' %(scheme, request.META['HTTP_HOST'])
     config.set('server', 'url', server_url)
 
     # request.meta has:

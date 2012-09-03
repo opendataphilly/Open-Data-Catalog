@@ -75,7 +75,7 @@ urlpatterns = patterns('',
     # POST to create
     (r'^api/submit/$', 'api.views.submit'),
 
-    url(r'^csw/', include("csw.urls")),
+    url(r'^catalog/', include("catalog.urls")),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
