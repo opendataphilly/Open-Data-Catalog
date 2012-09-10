@@ -20,4 +20,4 @@ pyproj==1.8.9
 lxml==2.2.8
 shapely==1.2.15
 OWSLib==0.5.1
-pycsw
+pycsw==1.4.0
