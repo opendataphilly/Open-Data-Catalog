@@ -163,22 +163,6 @@ SITEPORT = None
 
 # pycsw configuration
 CSW = {
-    'server': {
-        'home': '.',
-        'mimetype': 'application/xml; charset=UTF-8',
-        'encoding': 'UTF-8',
-        'language': 'en-US',
-        'maxrecords': '10',
-#        'loglevel': 'DEBUG',
-#        'logfile': '/tmp/pycsw.log',
-#        'ogc_schemas_base': 'http://foo',
-#        'federatedcatalogues': 'http://geo.data.gov/geoportal/csw/discovery',
-#        'pretty_print': 'true',
-#        'gzip_compresslevel': '8',
-#        'domainquerytype': 'range',
-#        'domaincounts': 'true',
-        'profiles': 'apiso,dif,fgdc,atom,ebrim',
-    },
     'metadata:main': {
         'identification_title': 'Open Data Catalog CSW',
         'identification_abstract': 'Open Data Catalog is an open data catalog based on Django, Python and PostgreSQL. It was originally developed for OpenDataPhilly.org, a portal that provides access to open data sets, applications, and APIs related to the Philadelphia region. The Open Data Catalog is a generalized version of the original source code with a simple skin. It is intended to display information and links to publicly available data in an easily searchable format. The code also includes options for data owners to submit data for consideration and for registered public users to nominate a type of data they would like to see openly available to the public.',
@@ -202,10 +186,6 @@ CSW = {
         'contact_hours': '0800h - 1600h EST',
         'contact_instructions': 'During hours of service.  Off on weekends.',
         'contact_role': 'pointOfContact',
-    },
-    'repository': {
-        'source': 'odc',
-        'mappings': 'catalog/mappings.py',
     },
     'metadata:inspire': {
         'enabled': 'false',
