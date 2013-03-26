@@ -16,8 +16,8 @@ simplejson==2.5.0
 sorl-thumbnail==3.2.5
 twitter==1.7.2
 wsgiref==0.1.2
-pyproj==1.8.9
+pyproj==1.9.2
 lxml==2.2.8
 shapely==1.2.15
 OWSLib==0.5.1
-pycsw==1.4.0
+pycsw==1.4.1
