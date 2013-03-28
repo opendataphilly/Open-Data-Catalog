@@ -6,7 +6,8 @@
 # Installing the Open Data Catalog
 ## Non-Python Dependencies
 
-        sudo apt-get install sendmail postgresql python python-pip libpq-dev python-dev libxml2-dev libxslt1-dev libgeos-c1
+        sudo apt-get update
+        sudo apt-get install git sendmail postgresql python postgresql-plpython-9.1 python-pip libpq-dev python-dev libxml2-dev libxslt1-dev libgeos-c1
 
 ## Python Dependencies
 
