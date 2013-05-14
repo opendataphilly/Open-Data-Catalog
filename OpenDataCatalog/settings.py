@@ -187,17 +187,6 @@ CSW = {
         'contact_instructions': 'During hours of service.  Off on weekends.',
         'contact_role': 'pointOfContact',
     },
-    'metadata:inspire': {
-        'enabled': 'false',
-        'languages_supported': 'eng',
-        'default_language': 'eng',
-        'date': '2012-06-11',
-        'gemet_keywords': 'Utility and governmental services',
-        'conformity_service': 'notEvaluated',
-        'contact_name': MANAGERS[0][0],
-        'contact_email': MANAGERS[0][1],
-        'temp_extent': '2012-06-11/2012-06-11',
-    }
 }
 
 # A sample logging configuration. The only tangible logging
