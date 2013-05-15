@@ -1,5 +1,4 @@
 import os.path
-from ConfigParser import SafeConfigParser
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -30,20 +29,13 @@ def csw(request):
     # object for interaction with pycsw
     mdict = dict(settings.CSW, **CONFIGURATION)
 
-    # TODO: pass just dict when pycsw supports it
-    config = SafeConfigParser()
-    for section, options in mdict.iteritems():
-        config.add_section(section)
-        for k, v in options.iteritems():
-            config.set(section, k, v)
-
     # update server.url
     server_url = '%s://%s%s' % \
         (request.META['wsgi.url_scheme'],
          request.META['HTTP_HOST'],
          request.META['PATH_INFO'])
 
-    config.set('server', 'url', server_url)
+    mdict['server']['url'] = server_url
 
     env = request.META.copy()
 
@@ -52,7 +44,7 @@ def csw(request):
             'REQUEST_URI': request.build_absolute_uri(),
             })
             
-    csw = server.Csw(config, env)
+    csw = server.Csw(mdict, env)
 
     content = csw.dispatch_wsgi()
 
