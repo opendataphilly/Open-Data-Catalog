@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.views.generic import TemplateView
 from django.contrib.sitemaps import FlatPageSitemap, GenericSitemap
 from django.conf import settings
+from django.conf.urls.static import static
 
 from OpenDataCatalog.opendata.feeds import ResourcesFeed, TagFeed, IdeasFeed, UpdatesFeed
 from OpenDataCatalog.opendata.models import Resource, Idea
@@ -78,10 +79,4 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
 
-    (r'^/static/admin_media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.ADMIN_MEDIA_ROOT}), 
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.STATIC_DATA}),
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT}),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
