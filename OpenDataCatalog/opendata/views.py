@@ -19,8 +19,8 @@ from models import TwitterCache
 import twitter
 import simplejson as json
 
-from models import *
-from forms import *
+from OpenDataCatalog.opendata.models import *
+from OpenDataCatalog.opendata.forms import *
 
 def home(request):
     tweets = cache.get( 'tweets' )

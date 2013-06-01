@@ -93,7 +93,7 @@ THUMBNAIL_EXTENSION = 'png'
 PAGINATION_DEFAULT_WINDOW = 2
 ###
 
-COMMENTS_APP = 'comments'
+COMMENTS_APP = 'OpenDataCatalog.comments'
 
 AUTH_PROFILE_MODULE = 'opendata.odpuserprofile'
 
@@ -110,9 +110,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
-    
-    "opendata.context_processors.get_current_path",
-    "opendata.context_processors.get_settings",
+
+    "OpenDataCatalog.opendata.context_processors.get_current_path",
+    "OpenDataCatalog.opendata.context_processors.get_settings",
 )
 
 
@@ -128,8 +128,7 @@ MIDDLEWARE_CLASSES = (
 
 )
 
-ROOT_URLCONF = 'urls'
-
+ROOT_URLCONF = 'OpenDataCatalog.urls'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -144,16 +143,17 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'django.contrib.humanize',
     'south',
-    'opendata',
+    'OpenDataCatalog.opendata',
     'registration',
     'sorl.thumbnail',
     'pagination',
     'django_sorting',
     'djangoratings',
-    'comments',
-    'suggestions',
-    'contest',
-    'catalog',
+    'OpenDataCatalog.comments',
+    'OpenDataCatalog.suggestions',
+    'OpenDataCatalog.contest',
+    'OpenDataCatalog.catalog',
+
 )
 
 # the hostname of the deployment

@@ -3,8 +3,8 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from models import *
-from forms import *
+from OpenDataCatalog.suggestions.models import *
+from OpenDataCatalog.suggestions.forms import *
 
 def list_all(request):
     suggestions = Suggestion.objects.order_by("-rating_score")

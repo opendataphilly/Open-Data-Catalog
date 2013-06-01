@@ -1,8 +1,8 @@
 # Create your views here
 from django.http import HttpResponse, Http404
-from opendata.models import *
-from opendata.views import send_email
-from suggestions.models import Suggestion
+from OpenDataCatalog.opendata.models import *
+from OpenDataCatalog.opendata.views import send_email
+from OpenDataCatalog.suggestions.models import Suggestion
 from datetime import datetime
 from encoder import *
 from rest import login_required

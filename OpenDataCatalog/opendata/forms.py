@@ -1,5 +1,5 @@
 from django import forms
-from models import UpdateFrequency, CoordSystem, UrlType, DataType
+from OpenDataCatalog.opendata.models import UpdateFrequency, CoordSystem, UrlType, DataType
 
 class SubmissionForm(forms.Form):
     dataset_name = forms.CharField(max_length=255, label="Data set, API or App name")
