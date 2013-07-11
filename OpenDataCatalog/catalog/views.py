@@ -14,7 +14,7 @@ CONFIGURATION = {
         'language': 'en-US',
         'maxrecords': '10',
         # 'pretty_print': 'true',
-        'profiles': 'apiso,dif,fgdc,atom,ebrim',
+        'profiles': 'apiso,ebrim',
     },
     'repository': {
         'source': 'odc',
