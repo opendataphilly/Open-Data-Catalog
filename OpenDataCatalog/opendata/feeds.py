@@ -1,7 +1,7 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Rss201rev2Feed as Rss2
 from django.shortcuts import get_object_or_404
-from models import Resource, Tag, Idea
+from OpenDataCatalog.opendata.models import Resource, Tag, Idea
 
 class BaseResourceFeed(Feed):
     feed_type = Rss2

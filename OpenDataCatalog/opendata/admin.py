@@ -1,8 +1,8 @@
 from datetime import datetime
-from opendata.models import *
-from comments.models import *
-from suggestions.models import *
-from contest.models import *
+from OpenDataCatalog.opendata.models import *
+from OpenDataCatalog.comments.models import *
+from OpenDataCatalog.suggestions.models import *
+from OpenDataCatalog.contest.models import *
 from django.contrib import admin
 
 class UrlImageInline(admin.TabularInline):

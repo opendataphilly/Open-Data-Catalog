@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from sorl.thumbnail.fields import ImageWithThumbnailsField
 from djangoratings.fields import RatingField
-from opendata.models import Resource
+from OpenDataCatalog.opendata.models import Resource
 
 class Suggestion(models.Model):
     text = models.CharField(max_length=255)

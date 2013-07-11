@@ -4,8 +4,8 @@ A few test to verify basic functionality. The encoder should probably be tested 
 This file demonstrates writing tests using the unittest module. These shoud pass
 when you run "manage.py test".
 """
-from opendata.models import *
-from suggestions.models import *
+from OpenDataCatalog.opendata.models import *
+from OpenDataCatalog.suggestions.models import *
 
 from django.test import TestCase
 from django.test.client import Client

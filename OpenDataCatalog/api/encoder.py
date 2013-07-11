@@ -1,5 +1,5 @@
-from opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea, IdeaImage
-from suggestions.models import Suggestion
+from OpenDataCatalog.opendata.models import Resource, DataType, Tag, CoordSystem, Url, UrlImage, Idea, IdeaImage
+from OpenDataCatalog.suggestions.models import Suggestion
 import simplejson as j
 
 def tiny_resource_encoder(obj):
