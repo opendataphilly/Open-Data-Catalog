@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail, mail_managers, EmailMessage
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from contest.models import *
+from OpenDataCatalog.contest.models import *
 from datetime import datetime
 
 def get_entries(request, contest_id=1):

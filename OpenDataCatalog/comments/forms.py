@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.comments.forms import CommentForm
-from comments.models import CommentWithRating
-from comments.widgets import StarsRadioFieldRenderer
+from OpenDataCatalog.comments.models import CommentWithRating
+from OpenDataCatalog.comments.widgets import StarsRadioFieldRenderer
 
 RATING_CHOICES = (
     (1,1),
