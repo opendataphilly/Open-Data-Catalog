@@ -109,7 +109,7 @@ with the upstream more easily while still maintaining your own style.
 For a quick and free deployment you can deploy directly to heroku (http://heroku.com). First make an account on the heroku website and then do the following:
 
         sudo gem install heroku       
-        heroku create --stack cedar --buildpack git@github.com:heroku/heroku-buildpack-python.git
+        heroku create --stack cedar --buildpack https://github.com/heroku/heroku-buildpack-python.git
         git push heroku master       
         heroku run python OpenDataCatalog/manage.py syncdb
 
