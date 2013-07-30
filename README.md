@@ -58,7 +58,7 @@ You can verify the connection with:
 
 ### Update settings
 
-Copy local_settings.py.example to local_settings.py
+Copy `local_settings.py.example` to `local_settings.py`
 
 Update the database settings in local_settings.py. You'll probably have to update "name", "user", "password", and "host". It should look similar to:
 
@@ -106,7 +106,14 @@ with the upstream more easily while still maintaining your own style.
 
 # Deploy to Heroku
 
-For a quick and free deployment you can deploy directly to heroku (http://heroku.com). First make an account on the heroku website and then do the following:
+For a quick and free deployment you can deploy directly to heroku (http://heroku.com). 
+First make an account on the heroku website and then do the following:
+
+Edit the `.gitignore` file and remove the following line:
+        
+        local_settings.py
+
+Ths will allow your personal settings from being pushed to heroku. Then:
 
         sudo gem install heroku       
         heroku create --stack cedar --buildpack https://github.com/heroku/heroku-buildpack-python.git
