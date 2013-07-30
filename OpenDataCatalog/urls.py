@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib.sitemaps import FlatPageSitemap, GenericSitemap
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from OpenDataCatalog.opendata.feeds import ResourcesFeed, TagFeed, IdeasFeed, UpdatesFeed
 from OpenDataCatalog.opendata.models import Resource, Idea
@@ -80,3 +81,5 @@ urlpatterns = patterns('',
     url(r'^_admin_/', include(admin.site.urls)),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += staticfiles_urlpatterns()
