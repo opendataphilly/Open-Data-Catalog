@@ -116,7 +116,7 @@ Edit the `.gitignore` file and remove the following line:
 Ths will allow your personal settings from being pushed to heroku. Then:
 
         sudo gem install heroku       
-        heroku create --stack cedar --buildpack https://github.com/heroku/heroku-buildpack-python.git
+        heroku create --stack cedar --buildpack https://github.com/cirlabs/heroku-buildpack-geodjango/
         git push heroku master       
         heroku run python OpenDataCatalog/manage.py syncdb
 
