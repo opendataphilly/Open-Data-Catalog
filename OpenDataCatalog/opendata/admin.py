@@ -92,6 +92,12 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_display = ['user', 'sent_date']
     search_fields = ['email_text', 'user']
     readonly_fields = ['user',]
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.user = request.user
+        
+        obj.save()
 
 class ODPUserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'can_notify',]
