@@ -44,13 +44,16 @@ class Contest(models.Model):
     def get_next_vote_date(self, user):
         votes = user.vote_set.order_by('-timestamp')
         increment = datetime.timedelta(days=self.vote_frequency)
-        last_vote_date = votes[0].timestamp
+        if len(votes):
+            last_vote_date = votes[0].timestamp
+        else:
+            last_vote_date = dt.today()
         next_vote_date = last_vote_date + increment 
         return next_vote_date
 
     def user_can_vote(self, user):
         votes = user.vote_set.order_by('-timestamp')
-        if votes.count > 0:           
+        if votes.count() > 0:           
             next_date = self.get_next_vote_date(user)
             if dt.today() < next_date and dt.today() < self.end_date:
                 return False
