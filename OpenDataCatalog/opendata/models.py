@@ -18,7 +18,7 @@ class Tag(models.Model):
     tag_name = models.CharField(max_length=150)
 
     def __unicode__(self):
-        return '%s' % self.tag_name
+        return u'%s' % self.tag_name
 
     class Meta: 
         ordering = ['tag_name']
@@ -27,7 +27,7 @@ class DataType(models.Model):
     data_type = models.CharField(max_length=50)
     
     def __unicode__(self):
-        return '%s' % self.data_type
+        return u'%s' % self.data_type
         
     class Meta: 
         ordering = ['data_type']
@@ -36,7 +36,7 @@ class UrlType(models.Model):
     url_type = models.CharField(max_length=50)
     
     def __unicode__(self):
-        return '%s' % self.url_type
+        return u'%s' % self.url_type
     
     class Meta: 
         ordering = ['url_type']
@@ -45,7 +45,7 @@ class UpdateFrequency(models.Model):
     update_frequency = models.CharField(max_length=50)
     
     def __unicode__(self):
-        return '%s' % self.update_frequency
+        return u'%s' % self.update_frequency
     
     class Meta: 
         ordering = ['update_frequency']
@@ -56,7 +56,7 @@ class CoordSystem(models.Model):
     EPSG_code = models.IntegerField(blank=True, help_text="Official EPSG code, numbers only")
     
     def __unicode__(self):
-        return '%s, %s' % (self.EPSG_code, self.name)
+        return u'%s, %s' % (self.EPSG_code, self.name)
         
     class Meta: 
         ordering = ['EPSG_code']
@@ -154,7 +154,7 @@ class Resource(models.Model):
         return "/opendata/resource/%i/%s" % (self.id, slug)
 
     def __unicode__(self):
-        return '%s' % self.name
+        return u'%s' % self.name
 
     # CSW specific properties
     @property 
@@ -266,7 +266,7 @@ class Url(models.Model):
     resource = models.ForeignKey(Resource)
 
     def __unicode__(self):
-        return '%s - %s - %s' % (self.url_label, self.url_type, self.url)
+        return u'%s - %s - %s' % (self.url_label, self.url_type, self.url)
 
 class UrlImage(models.Model):
     def get_image_path(instance, filename):
@@ -286,7 +286,7 @@ class UrlImage(models.Model):
     source_url = models.CharField(max_length=255, blank=True)
     
     def __unicode__(self):
-        return '%s' % (self.image)
+        return u'%s' % (self.image)
 
 class Idea(models.Model):
     title = models.CharField(max_length=255)
@@ -311,7 +311,7 @@ class Idea(models.Model):
         return "/idea/%i/%s" % (self.id, slug)
 
     def __unicode__(self):
-        return '%s' % (self.title)
+        return u'%s' % (self.title)
 
 
 class IdeaImage(models.Model):
@@ -333,12 +333,15 @@ class IdeaImage(models.Model):
     home_page = models.BooleanField(default=False, help_text="Select this image for use on the home page.")
 
     def __unicode__(self):
-        return '%s' % (self.image)
+        return u'%s' % (self.image)
 
 class Submission(models.Model):
     user = models.ForeignKey(User)
     sent_date = models.DateTimeField(auto_now=True)
     email_text = models.TextField()
+    
+    def __unicode__(self):
+        return u'Submission by %s' % self.user
 
 class TwitterCache(models.Model):
     text = models.TextField()
@@ -348,6 +351,9 @@ class ODPUserProfile(models.Model):
     can_notify = models.BooleanField(default=False)
     
     user = models.ForeignKey(User, unique=True)
+    
+    def __unicode__(self):
+        return u'Profile for %s' % self.user
 
 def gen_website_url():
     if not settings.SITEHOST:
