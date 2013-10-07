@@ -6,7 +6,7 @@ django-pagination==1.0.7
 django-ratings==0.3.6
 hg+https://bitbucket.org/ubernostrum/django-registration#egg=django-registration
 django-sorting==0.1
-gunicorn==0.14.2
+gunicorn==0.14.3
 httplib2==0.7.4
 oauth2==1.5.211
 psycopg2==2.5
