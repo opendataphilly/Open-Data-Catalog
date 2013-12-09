@@ -1,4 +1,4 @@
-
+import os
 from lxml import etree
 from shapely.wkt import loads
 
