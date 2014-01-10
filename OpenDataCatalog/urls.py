@@ -76,6 +76,7 @@ urlpatterns = patterns('',
     (r'^api/submit/$', 'OpenDataCatalog.api.views.submit'),
 
     url(r'^catalog/', include("OpenDataCatalog.catalog.urls")),
+    url(r'^data.json$', "OpenDataCatalog.catalog.views.data_json"),
 
     # Uncomment the next line to enable the admin:
     url(r'^_admin_/', include(admin.site.urls)),
