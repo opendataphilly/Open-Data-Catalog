@@ -1,9 +1,11 @@
+import json
 import os.path
 
 from django.conf import settings
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from OpenDataCatalog.opendata.models import Resource
 from pycsw import server
 
 CONFIGURATION = {
@@ -21,6 +23,30 @@ CONFIGURATION = {
         'mappings': os.path.join(os.path.dirname(__file__), 'mappings.py')
     }
 }
+
+
+@csrf_exempt
+def data_json(request):
+    """Return data.json representation of site catalog"""
+    json_data = []
+    for resource in Resource.objects.all():
+        record = {} 
+        record['title'] = resource.name
+        record['description'] = resource.description
+        record['keyword'] = resource.csw_keywords.split(',')
+        record['modified'] = resource.last_updated
+        record['publisher'] = resource.organization
+        record['contactPoint'] = resource.metadata_contact
+        record['mbox'] = resource.contact_email
+        record['identifier'] = resource.csw_identifier
+        if resource.is_published:
+            record['accessLevel'] = 'public'
+        else:
+            record['accessLevel'] = 'non-public'
+
+        json_data.append(record)
+
+    return HttpResponse(json.dumps(json_data), 'application/json')
 
 @csrf_exempt
 def csw(request):
